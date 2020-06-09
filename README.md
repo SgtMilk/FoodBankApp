@@ -24,9 +24,9 @@ Now that everything is installed, let's create our environment. Type:
 
     cd
 
-    git clone https://github.com/MeetTheNeedMtl/MeetTheNeedMtlFoodBank.git
+    git clone https://github.com/SgtMilk/FoodBankApp.git
 
-    cd MeetTheNeedMtlFoodBank
+    cd FoodBankApp
 
     npm update
 
@@ -88,7 +88,7 @@ Now, let's configure our mysql database. Type:
 
         exit;
 
-    cd MeetTheNeedMtlFoodBank
+    cd FoodBankApp
 
     nano server.js
 
@@ -119,8 +119,8 @@ You can put the server.js file as a service if you want it to work in the backgr
         After=network.target
 
         [Service]
-        ExecStart=sudo /usr/bin/node /home/pi/MeetTheNeedMtlFoodBank/server.js
-        WorkingDirectory=/home/pi/MeetTheNeedMtlFoodBank
+        ExecStart=sudo /usr/bin/node /home/pi/FoodBankApp/server.js
+        WorkingDirectory=/home/pi/FoodBankApp
         StandardOutput=inherit
         StandardError=inherit
         Restart=always
