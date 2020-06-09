@@ -19,7 +19,7 @@ const app = express();
 const connection = mysql.createConnection({
   host: "localhost",
   user: "admin",
-  password: "EszPh3pK$%",
+  password: "",
   database: "meettheneed",
   multipleStatements: true,
   //TODO THIS IS TO CHANGE FOR YOUR MYSQL DATABASE
