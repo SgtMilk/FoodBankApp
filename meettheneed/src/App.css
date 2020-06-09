@@ -1,0 +1,50 @@
+/*
+ * Copyright (C) 2020 Alix Routhier-Lalonde
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Lato";
+  background-color: #f5f5f5;
+  color: rgb(66, 66, 66);
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+ul {
+  all: unset;
+}
+
+li {
+  all: unset;
+}

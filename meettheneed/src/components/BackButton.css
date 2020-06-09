@@ -1,0 +1,38 @@
+/*
+ * Copyright (C) 2020 Alix Routhier-Lalonde
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+.back-button-div {
+  padding: 2%;
+}
+
+.back-button {
+  all: unset;
+  font-size: 250%;
+  font-weight: 525;
+  transition: 0.3s;
+}
+
+.back-button:hover {
+  color: rgb(2, 129, 2);
+}
+
+.back-button::-moz-focus-inner {
+  border: none;
+  outline: none;
+}
+
+.input {
+  padding: 2%;
+}
+
+.link {
+  all: unset;
+}
+
+.back-button-link {
+  text-decoration: none;
+  all: unset;
+}

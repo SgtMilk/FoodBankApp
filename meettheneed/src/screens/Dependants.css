@@ -1,0 +1,31 @@
+/*
+ * Copyright (C) 2020 Alix Routhier-Lalonde
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+.dependants {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.button-dependants {
+  all: unset;
+  transition: 0.3s;
+  padding: 1%;
+  font-size: 250%;
+  font-weight: 500;
+}
+
+.button-dependants:hover {
+  color: rgb(2, 129, 2);
+}
+
+.button-dependants::-moz-focus-inner {
+  border: none;
+  outline: none;
+}
