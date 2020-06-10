@@ -399,7 +399,7 @@ app.post("/api/removedependantid", (req, res) => {
   });
 });
 
-//search for a dependant api
+//search for a dependant api by firstname, lastname, date of birth
 app.post("/api/crm", (req, res) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
@@ -408,7 +408,7 @@ app.post("/api/crm", (req, res) => {
   checkWeek();
 
   //mysql
-  let sql = `select distinct id, numberOfBaskets, email from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
+  let sql = `select distinct id, numberOfBaskets from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
@@ -421,7 +421,31 @@ app.post("/api/crm", (req, res) => {
         message: "success",
         id: result[0].id,
         numberOfBaskets: result[0].numberOfBaskets,
-        email: result[0].email,
+      });
+    }
+  });
+});
+
+//search for a dependant api by id
+app.post("/api/crmid", (req, res) => {
+  let id = req.body.id;
+
+  checkWeek();
+
+  //mysql
+  let sql = `select distinct numberOfBaskets from dependants where id = ${id};`;
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    if (result[0] == null)
+      res.send({
+        message: "not there",
+        id: 0,
+      });
+    else {
+      res.send({
+        message: "success",
+        id: id,
+        numberOfBaskets: result[0].numberOfBaskets,
       });
     }
   });
