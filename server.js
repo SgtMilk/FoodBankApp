@@ -19,7 +19,7 @@ const app = express();
 const connection = mysql.createConnection({
   host: "localhost",
   user: "admin",
-  password: "",
+  password: "EszPh3pK$%",
   database: "meettheneed",
   multipleStatements: true,
   //TODO THIS IS TO CHANGE FOR YOUR MYSQL DATABASE
@@ -433,7 +433,7 @@ app.post("/api/crmid", (req, res) => {
   checkWeek();
 
   //mysql
-  let sql = `select distinct numberOfBaskets from dependants where id = ${id};`;
+  let sql = `select distinct numberOfBaskets, firstName, lastName, dateOfBirth from dependants where id = ${id};`;
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
@@ -446,6 +446,9 @@ app.post("/api/crmid", (req, res) => {
         message: "success",
         id: id,
         numberOfBaskets: result[0].numberOfBaskets,
+        firstName: result[0].firstName,
+        lastName: result[0].lastName,
+        dateOfBirth: result[0].dateOfBirth,
       });
     }
   });

@@ -19,7 +19,7 @@ export const Authentification = () => {
 
   const onSubmit = (values) => {
     axios
-      .post("http://raspberrypi.local/api/login", values)
+      .post("/api/login", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         redux.store.dispatch(redux.setUser(res.data.username));

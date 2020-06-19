@@ -41,7 +41,7 @@ export const AddAdministrator = () => {
       return;
     }
     axios
-      .post("http://raspberrypi.local/api/addadministrator", newvalues)
+      .post("/api/addadministrator", newvalues)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data === "username taken")

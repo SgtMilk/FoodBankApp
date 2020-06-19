@@ -21,7 +21,7 @@ export const Admin = (name) => {
     else {
       alert("Êtes-vous sûr que vous voulez supprimer cet administrateur?");
       axios
-        .post("http://raspberrypi.local/api/removeadministrator", {
+        .post("/api/removeadministrator", {
           username: name.props,
           curuser: redux.store.getState().username,
         })
@@ -34,7 +34,7 @@ export const Admin = (name) => {
           }
           console.log("succeded");
           axios
-            .post("http://raspberrypi.local/api/alladministrators", {
+            .post("/api/alladministrators", {
               curuser: redux.store.getState().username,
             })
             .then((res) => {

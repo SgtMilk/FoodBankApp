@@ -37,10 +37,7 @@ export const SearchDependant = () => {
       return;
     }
     axios
-      .post(
-        "http://raspberrypi.local/api/addbasket",
-        redux.store.getState().dependants
-      )
+      .post("/api/addbasket", redux.store.getState().dependants)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data === "success") {
@@ -59,7 +56,7 @@ export const SearchDependant = () => {
 
   const onChange = (values) => {
     axios
-      .post("http://raspberrypi.local/api/searchdependant", values)
+      .post("/api/searchdependant", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data.message === "not there") {
@@ -109,7 +106,7 @@ export const SearchDependant = () => {
     let values = redux.store.getState().dependants;
     values.curuser = redux.store.getState().username;
     axios
-      .post("http://raspberrypi.local/api/removebasket", values)
+      .post("/api/removebasket", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data === "success") {
@@ -137,7 +134,7 @@ export const SearchDependant = () => {
     let values = redux.store.getState().dependants;
     values.curuser = redux.store.getState().username;
     axios
-      .post("http://raspberrypi.local/api/removedependantid", values)
+      .post("/api/removedependantid", values)
       .then((res) => {
         if (res.data !== "success") {
           alert(

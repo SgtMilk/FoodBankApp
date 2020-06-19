@@ -37,7 +37,7 @@ export const AddDependant = () => {
       curuser: redux.store.getState().username,
     };
     axios
-      .post("http://raspberrypi.local/api/adddependant", newvalues)
+      .post("/api/adddependant", newvalues)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data.message === "already in database") {

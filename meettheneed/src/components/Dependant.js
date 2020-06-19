@@ -20,7 +20,7 @@ export const Dependant = (name) => {
   const deleteDependant = () => {
     alert("Êtes-vous sûr que vous voulez supprimer ce dépendant?");
     axios
-      .post("http://raspberrypi.local/api/removedependant", {
+      .post("/api/removedependant", {
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: dateOfBirth,
@@ -35,7 +35,7 @@ export const Dependant = (name) => {
         }
         console.log("succeded");
         axios
-          .post("http://raspberrypi.local/api/alldependants", {
+          .post("/api/alldependants", {
             curuser: redux.store.getState().dependants,
           })
           .then((res) => {

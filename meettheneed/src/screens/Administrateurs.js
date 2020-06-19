@@ -30,7 +30,7 @@ export const Administrateurs = () => {
   const goAddAdministrator = () => history.push("/addadministrator");
   const goRemoveAdministrator = () => {
     axios
-      .post("http://raspberrypi.local/api/alladministrators", {
+      .post("/api/alladministrators", {
         curuser: redux.store.getState().username,
       })
       .then((res) => {

@@ -29,7 +29,7 @@ export const Dependants = () => {
   const goAddDependant = () => history.push("/adddependant");
   const goRemoveDependant = () => {
     axios
-      .post("http://raspberrypi.local/api/alldependants", {
+      .post("/api/alldependants", {
         curuser: redux.store.getState().username,
       })
       .then((res) => {

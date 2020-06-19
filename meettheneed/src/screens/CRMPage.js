@@ -45,7 +45,7 @@ export const CRMPage = () => {
 
   const onChange = (values) => {
     axios
-      .post("http://raspberrypi.local/api/crm", values)
+      .post("/api/crm", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data.message === "not there")
