@@ -84,7 +84,7 @@ Now, let's configure our mysql database. Type:
         `registrationDate` DATETIME NOT NULL,
         PRIMARY KEY (`id`));
 
-        INSERT INTO admins(username, password) VALUES('admin', 'your admin password here');
+        INSERT INTO admins(username, password) VALUES('admin', 'your hashed password produced by initial_setup_password.js here');
 
         exit;
 
