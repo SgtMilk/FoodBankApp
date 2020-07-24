@@ -10,6 +10,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyparser = require("body-parser");
 const mysql = require("mysql");
+const crypto = require("crypto");
 
 const app = express();
 
@@ -80,8 +81,10 @@ app.post("/api/login", (req, res) => {
     return;
   }
 
+  let hashed_password = crypto.createHmac("sha256", password).digest("hex");
+
   //mysql
-  let sqlcheck = `select distinct username from admins where username = '${username}' and password = '${password}';`;
+  let sqlcheck = `select distinct username from admins where username = '${username}' and password = '${hashed_password}';`;
   connection.query(sqlcheck, (err, result) => {
     if (err) throw err;
     if (result[0] != null) {
@@ -108,6 +111,13 @@ app.post("/api/changepassword", (req, res) => {
   let newPassword = req.body.newPassword;
   let curuser = req.body.curuser;
 
+  let old_hashed_password = crypto
+    .createHmac("sha256", oldPassword)
+    .digest("hex");
+  let new_hashed_password = crypto
+    .createHmac("sha256", newPassword)
+    .digest("hex");
+
   let condition = authCheck(curuser);
   if (condition == false) {
     res.send("please stop trying to hack our system");
@@ -128,7 +138,7 @@ app.post("/api/changepassword", (req, res) => {
   }
 
   //mysql
-  let sqlchange = `UPDATE admins SET password = '${newPassword}' WHERE username = '${username}' and password = '${oldPassword}'`;
+  let sqlchange = `UPDATE admins SET password = '${new_hashed_password}' WHERE username = '${username}' and password = '${old_hashed_password}';`;
   connection.query(sqlchange, (err, result) => {
     if (err) throw err;
     if (result.changedRows === 0) {
@@ -146,6 +156,8 @@ app.post("/api/addadministrator", (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   let curuser = req.body.curuser;
+
+  let hashed_password = crypto.createHmac("sha256", password).digest("hex");
 
   let condition = authCheck(curuser);
   if (condition == false) {
@@ -169,7 +181,7 @@ app.post("/api/addadministrator", (req, res) => {
   }
   //mysql
   let sqlcheck = `select distinct username from admins where username = '${username}';`;
-  let sqladd = `insert into admins(username, password) values('${username}', '${password}');`;
+  let sqladd = `insert into admins(username, password) values('${username}', '${hashed_password}');`;
   connection.query(sqlcheck, (err, result) => {
     if (err) throw err;
     if (result[0] != null) {
