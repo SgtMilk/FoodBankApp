@@ -417,8 +417,6 @@ app.post("/api/crm", (req, res) => {
   let lastName = req.body.lastName;
   let dateOfBirth = req.body.dateOfBirth;
 
-  checkWeek();
-
   //mysql
   let sql = `select distinct id, numberOfBaskets from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sql, (err, result) => {
@@ -441,8 +439,6 @@ app.post("/api/crm", (req, res) => {
 //search for a dependant api by id
 app.post("/api/crmid", (req, res) => {
   let id = req.body.id;
-
-  checkWeek();
 
   //mysql
   let sql = `select distinct numberOfBaskets, firstName, lastName, dateOfBirth from dependants where id = ${id};`;
@@ -472,8 +468,6 @@ app.post("/api/searchdependant", (req, res) => {
   let lastName = req.body.lastName;
   let dateOfBirth = req.body.dateOfBirth;
 
-  checkWeek();
-
   //mysql
   let sql = `select distinct id, numberOfBaskets, email, homeAddress from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sql, (err, result) => {
@@ -498,8 +492,6 @@ app.post("/api/searchdependant", (req, res) => {
 //add a basket api
 app.post("/api/addbasket", (req, res) => {
   let id = req.body.id;
-
-  checkWeek();
 
   //mysql
   let sqlquery = `select distinct numberOfBaskets, id from dependants where id = ${id};`;
@@ -527,12 +519,6 @@ app.post("/api/removebasket", (req, res) => {
   let id = req.body.id;
   let curuser = req.body.curuser;
 
-  checkWeek();
-  if (authCheck(curuser) == false) {
-    res.send("please stop trying to hack our system");
-    return;
-  }
-
   //mysql
   let sqlquery = `select distinct numberOfBaskets, id from dependants where id = ${id};`;
   connection.query(sqlquery, (err, result) => {
@@ -558,23 +544,6 @@ app.post("/api/removebasket", (req, res) => {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //support functions
 
-const checkWeek = () => {
-  //mysql
-  let sql = `UPDATE dependants SET currentWeek = week(now());`;
-  connection.query(sql, (err, result) => {
-    if (err) throw err;
-    if (result.changedRows === 0) return;
-    else {
-      let sqlchange = `UPDATE dependants SET numberOfBaskets = 0;`;
-      connection.query(sqlchange, (err, result) => {
-        if (err) throw err;
-        if (result.changedRows === 0) console.log("problem changing week");
-        else console.log("just changed week!");
-      });
-    }
-  });
-};
-
 const authCheck = (username) => {
   let sqlcheck = `select * from admins where username = '${username}';`;
   connection.query(sqlcheck, (err, result) => {
@@ -594,6 +563,6 @@ function validateEmail(email) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //starting server
 
-const PORT = 80;
+const PORT = 8000;
 
 app.listen(PORT, () => console.log(`Server Running on port ${PORT}`));
