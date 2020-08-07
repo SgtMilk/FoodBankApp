@@ -4,6 +4,10 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+* {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
 body {
   margin: 0;
   padding: 0;

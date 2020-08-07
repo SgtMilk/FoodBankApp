@@ -411,6 +411,18 @@ app.post("/api/adddependant", (req, res) => {
                 id: result[0].id,
                 email: email,
               });
+              let dependantID = result[0].id;
+              let sql1 = `select id from admins where username = '${curuser}';`;
+              connection.query(sql1, (err, result) => {
+                if (err) throw err;
+                let adminID = result[0].id;
+                let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType) values(now(), week(now()), year(now()), ${dependantID}, ${adminID}, ${
+                  balance + 7
+                }, 'new dependant');`;
+                connection.query(sqlTransaction, (err, result) => {
+                  if (err) throw err;
+                });
+              });
             }
           });
         }

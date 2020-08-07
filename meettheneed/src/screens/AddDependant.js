@@ -187,7 +187,7 @@ export const AddDependant = () => {
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Numéro de téléphone maison: </label>
+            <label>Numéro de téléphone maison (___-___-____): </label>
             <br></br>
             <input
               name="homePhoneNumber"
@@ -197,10 +197,11 @@ export const AddDependant = () => {
               minLength="2"
               ref={register}
               autoComplete="new-password"
+              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Numéro de téléphone cellulaire: </label>
+            <label>Numéro de téléphone cellulaire (___-___-____): </label>
             <br></br>
             <input
               name="cellphoneNumber"
@@ -210,6 +211,7 @@ export const AddDependant = () => {
               minLength="2"
               ref={register}
               autoComplete="new-password"
+              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             ></input>
           </div>
           <br></br>
@@ -737,7 +739,7 @@ export const AddDependant = () => {
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Numéro de Téléphone de l’intervenant: </label>
+            <label>Numéro de Téléphone de l’intervenant (___-___-____): </label>
             <br></br>
             <input
               name="socialWorkerPhoneNumberOrganism"
@@ -745,6 +747,7 @@ export const AddDependant = () => {
               type="tel"
               ref={register}
               autoComplete="new-password"
+              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -783,7 +786,7 @@ export const AddDependant = () => {
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Numéro de Téléphone de l’intervenant: </label>
+            <label>Numéro de Téléphone de l’intervenant (___-___-____): </label>
             <br></br>
             <input
               name="socialWorkerPhoneNumberCuratel"
@@ -791,6 +794,7 @@ export const AddDependant = () => {
               type="tel"
               ref={register}
               autoComplete="new-password"
+              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
