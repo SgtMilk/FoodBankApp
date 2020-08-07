@@ -258,34 +258,109 @@ app.post("/api/adddependant", (req, res) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
   let dateOfBirth = req.body.dateOfBirth;
+  let sex = req.body.sex;
+  let studentStatus = req.body.studentStatus;
+  let memberStatus = req.body.memberStatus;
+  let volunteerStatus = req.body.volunteerStatus;
   let email = req.body.email;
-  let homeAddress = req.body.homeAddress;
+  let homePhoneNumber = req.body.homePhoneNumber;
+  let cellphoneNumber = req.body.cellphoneNumber;
+  let homeNumber = req.body.homeNumber;
+  let homeStreet = req.body.homeStreet;
+  let appartmentNumber = req.body.appartmentNumber;
+  let appartmentLevel = req.body.appartmentLevel;
+  let homeEntryCode = req.body.homeEntryCode;
+  let homePostalCode = req.body.homePostalCode;
+  let residencyProofStatus = req.body.residencyProofStatus;
+  let typeOfHouse = req.body.typeOfHouse;
+  let sourceOfRevenue = req.body.sourceOfRevenue;
+  let familyComposition = req.body.familyComposition;
+  let numberOfOtherFamilyMembers = req.body.numberOfOtherFamilyMembers;
+  let DOBfamilyMember1 = req.body.DOBfamilyMember1;
+  let DOBfamilyMember2 = req.body.DOBfamilyMember2;
+  let DOBfamilyMember3 = req.body.DOBfamilyMember3;
+  let DOBfamilyMember4 = req.body.DOBfamilyMember4;
+  let DOBfamilyMember5 = req.body.DOBfamilyMember5;
+  let DOBfamilyMember6 = req.body.DOBfamilyMember6;
+  let DOBfamilyMember7 = req.body.DOBfamilyMember7;
+  let DOBfamilyMember8 = req.body.DOBfamilyMember8;
+  let DOBfamilyMember9 = req.body.DOBfamilyMember9;
+  let DOBfamilyMember10 = req.body.DOBfamilyMember10;
+  let DOBfamilyMember11 = req.body.DOBfamilyMember11;
+  let DOBfamilyMember12 = req.body.DOBfamilyMember12;
+  let DOBfamilyMember13 = req.body.DOBfamilyMember13;
+  let DOBfamilyMember14 = req.body.DOBfamilyMember14;
+  let DOBfamilyMember15 = req.body.DOBfamilyMember15;
+  let DOBfamilyMember16 = req.body.DOBfamilyMember16;
+  let DOBfamilyMember17 = req.body.DOBfamilyMember17;
+  let DOBfamilyMember18 = req.body.DOBfamilyMember18;
+  let DOBfamilyMember19 = req.body.DOBfamilyMember19;
+  let sourceOrganismName = req.body.sourceOrganismName;
+  let socialWorkerNameOrganism = req.body.socialWorkerNameOrganism;
+  let socialWorkerPhoneNumberOrganism =
+    req.body.socialWorkerPhoneNumberOrganism;
+  let socialWorkerPostOrganism = req.body.socialWorkerPostOrganism;
+  let curatelName = req.body.curatelName;
+  let socialWorkerNameCuratel = req.body.socialWorkerNameCuratel;
+  let socialWorkerPhoneNumberCuratel = req.body.socialWorkerPhoneNumberCuratel;
+  let socialWorkerPostCuratel = req.body.socialWorkerPostCuratel;
+  let balance = req.body.balance;
   let curuser = req.body.curuser;
 
-  if (
-    firstName.length > 45 ||
-    lastName.length > 45 ||
-    dateOfBirth.length > 45 ||
-    email.length > 45 ||
-    homeAddress.length > 45 ||
-    curuser.length > 45 ||
-    firstName === null ||
-    firstName === undefined ||
-    firstName === "" ||
-    lastName === null ||
-    lastName === undefined ||
-    lastName === "" ||
-    dateOfBirth === null ||
-    dateOfBirth === undefined ||
-    dateOfBirth === "" ||
-    dateOfBirth.length === 0 ||
-    email.length > 45 ||
-    homeAddress.length > 45 ||
-    curuser.length > 45
-  ) {
-    res.send("please stop trying to hack our system");
-    return;
-  }
+  let allParameters = [
+    firstName,
+    lastName,
+    dateOfBirth,
+    sex,
+    studentStatus,
+    memberStatus,
+    volunteerStatus,
+    email,
+    homePhoneNumber,
+    cellphoneNumber,
+    homeNumber,
+    homeStreet,
+    appartmentNumber,
+    appartmentLevel,
+    homeEntryCode,
+    homePostalCode,
+    residencyProofStatus,
+    typeOfHouse,
+    sourceOfRevenue,
+    familyComposition,
+    numberOfOtherFamilyMembers,
+    DOBfamilyMember1,
+    DOBfamilyMember2,
+    DOBfamilyMember3,
+    DOBfamilyMember4,
+    DOBfamilyMember5,
+    DOBfamilyMember6,
+    DOBfamilyMember7,
+    DOBfamilyMember8,
+    DOBfamilyMember9,
+    DOBfamilyMember10,
+    DOBfamilyMember11,
+    DOBfamilyMember12,
+    DOBfamilyMember13,
+    DOBfamilyMember14,
+    DOBfamilyMember15,
+    DOBfamilyMember16,
+    DOBfamilyMember17,
+    DOBfamilyMember18,
+    DOBfamilyMember19,
+    sourceOrganismName,
+    socialWorkerNameOrganism,
+    socialWorkerPhoneNumberOrganism,
+    socialWorkerPostOrganism,
+    curatelName,
+    socialWorkerNameCuratel,
+    socialWorkerPhoneNumberCuratel,
+    socialWorkerPostCuratel,
+    balance,
+    curuser,
+  ];
+
+  checkXXS(allParameters);
 
   if (authCheck(curuser) == false) {
     res.send("please stop trying to hack our system");
@@ -298,10 +373,22 @@ app.post("/api/adddependant", (req, res) => {
       return;
     }
   }
+  if (
+    socialWorkerPostCuratel === undefined ||
+    socialWorkerPostCuratel === null ||
+    socialWorkerPostCuratel === ""
+  )
+    socialWorkerPostCuratel = "NULL";
+  if (
+    socialWorkerPostOrganism === undefined ||
+    socialWorkerPostOrganism === null ||
+    socialWorkerPostOrganism === ""
+  )
+    socialWorkerPostOrganism = "NULL";
 
   //mysql
   let sqlcheck = `select distinct firstName from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
-  let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, email, homeAddress, currentWeek, numberOfBaskets, registrationDate) values ('${firstName}', '${lastName}', '${dateOfBirth}', '${email}', '${homeAddress}', week(now()), 0, now());`;
+  let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance) values ("${firstName}", "${lastName}", "${dateOfBirth}",  "${sex}", "${studentStatus}", "${memberStatus}", "${volunteerStatus}", "${email}", "${homePhoneNumber}", "${cellphoneNumber}", ${homeNumber}, "${homeStreet}", "${appartmentNumber}", "${appartmentLevel}", "${homeEntryCode}", "${homePostalCode}", "${residencyProofStatus}", "${typeOfHouse}", "${sourceOfRevenue}", "${familyComposition}", "${numberOfOtherFamilyMembers}", "${DOBfamilyMember1}", "${DOBfamilyMember2}", "${DOBfamilyMember3}", "${DOBfamilyMember4}", "${DOBfamilyMember5}", "${DOBfamilyMember6}", "${DOBfamilyMember7}", "${DOBfamilyMember8}", "${DOBfamilyMember9}", "${DOBfamilyMember10}", "${DOBfamilyMember11}", "${DOBfamilyMember12}", "${DOBfamilyMember13}", "${DOBfamilyMember14}", "${DOBfamilyMember15}", "${DOBfamilyMember16}", "${DOBfamilyMember17}", "${DOBfamilyMember18}", "${DOBfamilyMember19}", "${sourceOrganismName}", "${socialWorkerNameOrganism}", "${socialWorkerPhoneNumberOrganism}", ${socialWorkerPostOrganism}, "${curatelName}", "${socialWorkerNameCuratel}", "${socialWorkerPhoneNumberCuratel}", ${socialWorkerPostCuratel}, now(), now(), date_add(now(), INTERVAL 1 year), ${balance});`;
   let sqlid = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sqlcheck, (err, result) => {
     if (err) throw err;
@@ -558,6 +645,16 @@ function validateEmail(email) {
   let re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
 
   return re.test(email);
+}
+
+function checkXXS(array) {
+  for (let i = 0; i < array.length; i++) {
+    array[i] = escapeHTML(array[i]);
+  }
+}
+
+function escapeHTML(unsafe_str) {
+  return unsafe_str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

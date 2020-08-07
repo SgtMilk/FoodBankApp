@@ -24,20 +24,13 @@ export const AddDependant = () => {
       redux.store.getState().username === "" ||
       redux.store.getState().username === undefined
     )
-      return; //<Redirect to="/auth" />;
+      return <Redirect to="/auth" />;
   };
 
   const onSubmit = (values) => {
-    let newvalues = {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      dateOfBirth: values.dateOfBirth,
-      email: values.email,
-      homeAddress: values.homeAddress,
-      curuser: redux.store.getState().username,
-    };
+    values.curuser = redux.store.getState().username;
     axios
-      .post("/api/adddependant", newvalues)
+      .post("/api/adddependant", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
         if (res.data.message === "already in database") {
@@ -80,7 +73,7 @@ export const AddDependant = () => {
       <div className="form-addDependant">
         <form onSubmit={handleSubmit(onSubmit)} id="form-adddependant">
           <div className="input-wrapper-addDependant">
-            <label>Prénom:</label>
+            <label>Prénom (requis): </label>
             <br></br>
             <input
               name="firstName"
@@ -90,11 +83,11 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Nom:</label>
+            <label>Nom (requis): </label>
             <br></br>
             <input
               name="lastName"
@@ -104,11 +97,11 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Date de naissance:</label>
+            <label>Date de naissance (requis): </label>
             <br></br>
             <input
               name="dateOfBirth"
@@ -118,13 +111,13 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Sexe: </label>
+            <label>Sexe (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="sex" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -139,9 +132,9 @@ export const AddDependant = () => {
           </p>
           <br></br>
           <div className="input-wrapper-addDependant">
-            <label>Statut d'étudiant: </label>
+            <label>Statut d'étudiant (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="studentStatus" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -153,9 +146,9 @@ export const AddDependant = () => {
             </select>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Statut de membre: </label>
+            <label>Statut de membre (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="memberStatus" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -164,9 +157,9 @@ export const AddDependant = () => {
             </select>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Statut de bénévole: </label>
+            <label>Statut de bénévole (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="volunteerStatus" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -181,7 +174,7 @@ export const AddDependant = () => {
           </p>
           <br></br>
           <div className="input-wrapper-addDependant">
-            <label>Courriel (optionnel):</label>
+            <label>Courriel:</label>
             <br></br>
             <input
               name="email"
@@ -190,33 +183,33 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Numéro de téléphone maison: </label>
             <br></br>
             <input
-              name="email"
+              name="homePhoneNumber"
               className="input-addDependant"
-              type="email"
+              type="tel"
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Numéro de téléphone cellulaire: </label>
             <br></br>
             <input
-              name="email"
+              name="cellphoneNumber"
               className="input-addDependant"
-              type="email"
+              type="tel"
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <br></br>
@@ -225,87 +218,96 @@ export const AddDependant = () => {
           </p>
           <br></br>
           <div className="input-wrapper-addDependant">
-            <label>Numéro de porte: </label>
+            <label>Numéro de porte (requis): </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="homeNumber"
               className="input-addDependant"
-              type="text"
-              maxLength="45"
-              minLength="2"
+              type="number"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
+              required
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Rue: </label>
+            <label>Rue (requis): </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="homeStreet"
               className="input-addDependant"
               type="text"
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
+              required
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Appartement: </label>
+            <label>Numéro d'appartement: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="appartmentNumber"
               className="input-addDependant"
               type="text"
               maxLength="45"
-              minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Étage: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="appartmentLevel"
               className="input-addDependant"
               type="text"
               maxLength="45"
-              minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Code de la sonnette (pour livraison)</label>
             <br></br>
             <input
-              name="homeAddress"
+              name="homeEntryCode"
               className="input-addDependant"
               type="text"
               maxLength="45"
-              minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Code Postal: </label>
+            <label>Code Postal (requis): </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="homePostalCode"
               className="input-addDependant"
               type="text"
-              maxLength="45"
+              maxLength="20"
               minLength="2"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
+              required
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Type de logement: </label>
+            <label>Preuve de résidence montrée (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="residencyProofStatus" required ref={register}>
+              <option value="none" selected disabled hidden>
+                Choisir une option
+              </option>
+              <option value="Oui">Oui</option>
+              <option value="Non">Non</option>
+            </select>
+          </div>
+          <div className="input-wrapper-addDependant">
+            <label>Type de logement (requis): </label>
+            <br></br>
+            <select name="typeOfHouse" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -353,9 +355,9 @@ export const AddDependant = () => {
           </p>
           <br></br>
           <div className="input-wrapper-addDependant">
-            <label>Source de revenu: </label>
+            <label>Source de revenu (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="sourceOfRevenue" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -384,9 +386,9 @@ export const AddDependant = () => {
             </select>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Composition du foyer: </label>
+            <label>Composition du foyer (requis): </label>
             <br></br>
-            <select name="sex-addDependant" id="sex-addDependant">
+            <select name="familyComposition" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -406,9 +408,11 @@ export const AddDependant = () => {
             </select>
           </div>
           <div className="input-wrapper-addDependant">
-            <label>Nombre de personnes vivant avec ce dépendant:</label>
+            <label>
+              Nombre de personnes vivant avec ce dépendant (requis):
+            </label>
             <br></br>
-            <select name="sex-addDependant" id="numberOfOtherFamilyMembers">
+            <select name="numberOfOtherFamilyMembers" required ref={register}>
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -439,14 +443,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="1"
-              name="dateOfBirth1"
+              name="DOBfamilyMember1"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant2">
@@ -454,14 +457,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="2"
-              name="dateOfBirth"
+              name="DOBfamilyMember2"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant3">
@@ -469,14 +471,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="3"
-              name="dateOfBirth"
+              name="DOBfamilyMember3"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant4">
@@ -484,14 +485,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="4"
-              name="dateOfBirth"
+              name="DOBfamilyMember4"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant5">
@@ -499,14 +499,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="5"
-              name="dateOfBirth"
+              name="DOBfamilyMember5"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant6">
@@ -514,14 +513,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="6"
-              name="dateOfBirth"
+              name="DOBfamilyMember6"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant7">
@@ -529,14 +527,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="7"
-              name="dateOfBirth"
+              name="DOBfamilyMember7"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant8">
@@ -544,14 +541,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="8"
-              name="dateOfBirth"
+              name="DOBfamilyMember8"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant9">
@@ -559,14 +555,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="9"
-              name="dateOfBirth"
+              name="DOBfamilyMember9"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant10">
@@ -574,14 +569,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="10"
-              name="dateOfBirth"
+              name="DOBfamilyMember10"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant11">
@@ -589,14 +583,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="11"
-              name="dateOfBirth"
+              name="DOBfamilyMember11"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant12">
@@ -604,14 +597,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="12"
-              name="dateOfBirth"
+              name="DOBfamilyMember12"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant13">
@@ -619,14 +611,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="13"
-              name="dateOfBirth"
+              name="DOBfamilyMember13"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant14">
@@ -634,14 +625,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="14"
-              name="dateOfBirth"
+              name="DOBfamilyMember14"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant15">
@@ -649,14 +639,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="15"
-              name="dateOfBirth"
+              name="DOBfamilyMember15"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant16">
@@ -664,14 +653,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="16"
-              name="dateOfBirth"
+              name="DOBfamilyMember16"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant17">
@@ -679,14 +667,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="17"
-              name="dateOfBirth"
+              name="DOBfamilyMember17"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant18">
@@ -694,14 +681,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="18"
-              name="dateOfBirth"
+              name="DOBfamilyMember18"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant19">
@@ -709,14 +695,13 @@ export const AddDependant = () => {
             <br></br>
             <input
               id="19"
-              name="dateOfBirth"
+              name="DOBfamilyMember19"
               className="input-addDependant"
               type="date"
-              required
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <br></br>
@@ -731,104 +716,105 @@ export const AddDependant = () => {
             </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="sourceOrganismName"
               className="input-addDependant"
               type="text"
-              maxLength="45"
-              minLength="2"
+              maxLength="100"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Nom de l’intervenant: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerNameOrganism"
               className="input-addDependant"
               type="text"
-              maxLength="45"
-              minLength="2"
+              maxLength="100"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Numéro de Téléphone de l’intervenant: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerPhoneNumberOrganism"
               className="input-addDependant"
-              type="text"
-              maxLength="45"
-              minLength="2"
+              type="tel"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Poste: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerPostOrganism"
               className="input-addDependant"
-              type="text"
-              maxLength="45"
-              minLength="2"
+              type="number"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Curatel: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="curatelName"
               className="input-addDependant"
               type="text"
-              maxLength="45"
-              minLength="2"
+              maxLength="100"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Nom de l’intervenant: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerNameCuratel"
               className="input-addDependant"
               type="text"
-              maxLength="45"
-              minLength="2"
+              maxLength="100"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Numéro de Téléphone de l’intervenant: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerPhoneNumberCuratel"
               className="input-addDependant"
-              type="text"
-              maxLength="45"
-              minLength="2"
+              type="tel"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Poste: </label>
             <br></br>
             <input
-              name="homeAddress"
+              name="socialWorkerPostCuratel"
               className="input-addDependant"
-              type="text"
-              maxLength="45"
-              minLength="2"
+              type="number"
               ref={register}
-              autoComplete="off"
+              autoComplete="new-password"
+            ></input>
+          </div>
+          <div className="input-wrapper-addDependant">
+            <label>Balance initiale (requis): </label>
+            <br></br>
+            <input
+              name="balance"
+              className="input-addDependant"
+              type="number"
+              step="0.01"
+              required
+              ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
