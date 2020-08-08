@@ -5,15 +5,17 @@
  */
 
 import React from "react";
-import "./AddDependant.css";
+import "./ModifyDependant.css";
 import { BackButton } from "../components/BackButton";
 import { useForm } from "react-hook-form";
 import redux from "../index";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 const axios = require("axios");
 
-export const AddDependant = () => {
+export const ModifyDependant = () => {
   const { handleSubmit, register } = useForm();
+
+  const history = useHistory();
 
   const authCheck = () => {
     if (
@@ -29,24 +31,20 @@ export const AddDependant = () => {
 
   const onSubmit = (values) => {
     values.curuser = redux.store.getState().username;
+    values.id = redux.store.getState().dependants.id;
+
     axios
-      .post("/api/adddependant", values)
+      .post("/api/modifydependant", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
-        if (res.data.message === "already in database") {
-          document.getElementById(
-            "message-addDependant"
-          ).innerHTML = `Il existe déjà un dépendant avec ce nom et date de naissance`;
+        if (res.data.message === "failure") {
+          alert("Veuillez contacter un développeur de meet the need");
+          redux.store.dispatch(redux.setDependants({}));
+          history.push("/searchdependants");
         } else if (res.data.message === "success") {
-          alert("Dépendant ajouté avec succès!");
-          console.log("success");
-          showQR(res.data.id, res.data.email);
-          document.getElementById("form-adddependant").reset();
-          document.getElementById("message-addDependant").innerHTML = ``;
-        } else {
-          document.getElementById(
-            "message-addDependant"
-          ).innerHTML = `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
+          alert("Le compte a été modifié avec succès");
+          redux.store.dispatch(redux.setDependants({}));
+          history.push("/searchdependants");
         }
       })
       .catch((error) => {
@@ -54,70 +52,21 @@ export const AddDependant = () => {
       });
   };
 
-  const showQR = (id, email) => {
-    let image = document.getElementById("image-addDependant");
-    let img = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`;
-    image.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`.replace(
-      "150x150",
-      "225x225"
-    );
-    image.style.display = "block";
-    if (email === null || email === "" || email === undefined) return;
-    window.open(`mailto:${email}?subject=QRcode&body=${img}`);
-  };
-
   return (
     <div className="addDependant">
       <script> {authCheck()}</script>
-      <BackButton to="/dependants" />
+      <BackButton to="/searchdependants" />
       <div className="form-addDependant">
         <form onSubmit={handleSubmit(onSubmit)} id="form-adddependant">
           <div className="input-wrapper-addDependant">
-            <label>Prénom (requis): </label>
-            <br></br>
-            <input
-              name="firstName"
-              className="input-addDependant"
-              type="text"
-              required
-              maxLength="45"
-              minLength="1"
-              ref={register}
-              autoComplete="new-password"
-            ></input>
-          </div>
-          <div className="input-wrapper-addDependant">
-            <label>Nom (requis): </label>
-            <br></br>
-            <input
-              name="lastName"
-              className="input-addDependant"
-              type="text"
-              required
-              maxLength="45"
-              minLength="1"
-              ref={register}
-              autoComplete="new-password"
-            ></input>
-          </div>
-          <div className="input-wrapper-addDependant">
-            <label>Date de naissance (requis): </label>
-            <br></br>
-            <input
-              name="dateOfBirth"
-              className="input-addDependant"
-              type="date"
-              required
-              maxLength="10"
-              minLength="4"
-              ref={register}
-              autoComplete="new-password"
-            ></input>
-          </div>
-          <div className="input-wrapper-addDependant">
             <label>Sexe (requis): </label>
             <br></br>
-            <select name="sex" required ref={register}>
+            <select
+              name="sex"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.sex}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -134,7 +83,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Statut d'étudiant (requis): </label>
             <br></br>
-            <select name="studentStatus" required ref={register}>
+            <select
+              name="studentStatus"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.studentStatus}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -148,7 +102,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Statut de membre (requis): </label>
             <br></br>
-            <select name="memberStatus" required ref={register}>
+            <select
+              name="memberStatus"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.memberStatus}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -159,7 +118,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Statut de bénévole (requis): </label>
             <br></br>
-            <select name="volunteerStatus" required ref={register}>
+            <select
+              name="volunteerStatus"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.volunteerStatus}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -184,6 +148,7 @@ export const AddDependant = () => {
               minLength="2"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.email}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -197,6 +162,7 @@ export const AddDependant = () => {
               minLength="2"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.homePhoneNumber}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -210,6 +176,7 @@ export const AddDependant = () => {
               minLength="2"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.cellphoneNumber}
             ></input>
           </div>
           <br></br>
@@ -227,6 +194,7 @@ export const AddDependant = () => {
               ref={register}
               autoComplete="new-password"
               required
+              defaultValue={redux.store.getState().dependants.homeNumber}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -241,6 +209,7 @@ export const AddDependant = () => {
               ref={register}
               autoComplete="new-password"
               required
+              defaultValue={redux.store.getState().dependants.homeStreet}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -253,6 +222,7 @@ export const AddDependant = () => {
               maxLength="45"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.appartmentNumber}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -265,6 +235,7 @@ export const AddDependant = () => {
               maxLength="45"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.appartmnentLevel}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -277,6 +248,7 @@ export const AddDependant = () => {
               maxLength="45"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.homeEntryCode}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -291,12 +263,20 @@ export const AddDependant = () => {
               ref={register}
               autoComplete="new-password"
               required
+              defaultValue={redux.store.getState().dependants.homePostalCode}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
             <label>Preuve de résidence montrée (requis): </label>
             <br></br>
-            <select name="residencyProofStatus" required ref={register}>
+            <select
+              name="residencyProofStatus"
+              required
+              ref={register}
+              defaultValue={
+                redux.store.getState().dependants.residencyProofStatus
+              }
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -307,7 +287,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Type de logement (requis): </label>
             <br></br>
-            <select name="typeOfHouse" required ref={register}>
+            <select
+              name="typeOfHouse"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.typeOfHouse}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -357,7 +342,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Source de revenu (requis): </label>
             <br></br>
-            <select name="sourceOfRevenue" required ref={register}>
+            <select
+              name="sourceOfRevenue"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.sourceOfRevenue}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -388,7 +378,12 @@ export const AddDependant = () => {
           <div className="input-wrapper-addDependant">
             <label>Composition du foyer (requis): </label>
             <br></br>
-            <select name="familyComposition" required ref={register}>
+            <select
+              name="familyComposition"
+              required
+              ref={register}
+              defaultValue={redux.store.getState().dependants.familyComposition}
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -412,7 +407,14 @@ export const AddDependant = () => {
               Nombre de personnes vivant avec ce dépendant (requis):
             </label>
             <br></br>
-            <select name="numberOfOtherFamilyMembers" required ref={register}>
+            <select
+              name="numberOfOtherFamilyMembers"
+              required
+              ref={register}
+              defaultValue={
+                redux.store.getState().dependants.numberOfOtherFamilyMembers
+              }
+            >
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
@@ -450,6 +452,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember1}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant2">
@@ -464,6 +467,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember2}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant3">
@@ -478,6 +482,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember3}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant4">
@@ -492,6 +497,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember4}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant5">
@@ -506,6 +512,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember5}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant6">
@@ -520,6 +527,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember6}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant7">
@@ -534,6 +542,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember7}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant8">
@@ -548,6 +557,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember8}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant9">
@@ -562,6 +572,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember9}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant10">
@@ -576,6 +587,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember10}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant11">
@@ -590,6 +602,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember11}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant12">
@@ -604,6 +617,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember12}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant13">
@@ -618,6 +632,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember13}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant14">
@@ -632,6 +647,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember14}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant15">
@@ -646,6 +662,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember15}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant16">
@@ -660,6 +677,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember16}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant17">
@@ -674,6 +692,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember17}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant18">
@@ -688,6 +707,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember18}
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="DOBdependant19">
@@ -702,6 +722,7 @@ export const AddDependant = () => {
               minLength="4"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.DOBfamilyMember19}
             ></input>
           </div>
           <br></br>
@@ -722,6 +743,9 @@ export const AddDependant = () => {
               maxLength="100"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.sourceOrganismName
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -734,6 +758,9 @@ export const AddDependant = () => {
               maxLength="100"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.socialWorkerNameOrganism
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -745,6 +772,10 @@ export const AddDependant = () => {
               type="tel"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants
+                  .socialWorkerPhoneNumberOrganism
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -756,6 +787,9 @@ export const AddDependant = () => {
               type="number"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.socialWorkerPostOrganism
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -768,6 +802,7 @@ export const AddDependant = () => {
               maxLength="100"
               ref={register}
               autoComplete="new-password"
+              defaultValue={redux.store.getState().dependants.curatelName}
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -780,6 +815,9 @@ export const AddDependant = () => {
               maxLength="100"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.socialWorkerNameCuratel
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -791,6 +829,9 @@ export const AddDependant = () => {
               type="tel"
               ref={register}
               autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.socialWorkerPhoneNumberCuratel
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -802,19 +843,9 @@ export const AddDependant = () => {
               type="number"
               ref={register}
               autoComplete="new-password"
-            ></input>
-          </div>
-          <div className="input-wrapper-addDependant">
-            <label>Dépôt initial (requis): </label>
-            <br></br>
-            <input
-              name="balance"
-              className="input-addDependant"
-              type="number"
-              step="0.01"
-              required
-              ref={register}
-              autoComplete="new-password"
+              defaultValue={
+                redux.store.getState().dependants.socialWorkerPostCuratel
+              }
             ></input>
           </div>
           <div className="input-wrapper-addDependant">

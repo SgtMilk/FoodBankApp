@@ -20,6 +20,7 @@ import { RemoveAdministrator } from "./screens/RemoveAdministrator";
 import { AddDependant } from "./screens/AddDependant";
 import { RemoveDependant } from "./screens/RemoveDependant";
 import { SearchDependant } from "./screens/SearchDependant";
+import { ModifyDependant } from "./screens/ModifyDependant";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           exact
           component={RemoveAdministrator}
         />
+        <Route path="/modifydependant" exact component={ModifyDependant} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>

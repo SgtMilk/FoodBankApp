@@ -388,7 +388,9 @@ app.post("/api/adddependant", (req, res) => {
 
   //mysql
   let sqlcheck = `select distinct firstName from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
-  let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance) values ("${firstName}", "${lastName}", "${dateOfBirth}",  "${sex}", "${studentStatus}", "${memberStatus}", "${volunteerStatus}", "${email}", "${homePhoneNumber}", "${cellphoneNumber}", ${homeNumber}, "${homeStreet}", "${appartmentNumber}", "${appartmentLevel}", "${homeEntryCode}", "${homePostalCode}", "${residencyProofStatus}", "${typeOfHouse}", "${sourceOfRevenue}", "${familyComposition}", "${numberOfOtherFamilyMembers}", "${DOBfamilyMember1}", "${DOBfamilyMember2}", "${DOBfamilyMember3}", "${DOBfamilyMember4}", "${DOBfamilyMember5}", "${DOBfamilyMember6}", "${DOBfamilyMember7}", "${DOBfamilyMember8}", "${DOBfamilyMember9}", "${DOBfamilyMember10}", "${DOBfamilyMember11}", "${DOBfamilyMember12}", "${DOBfamilyMember13}", "${DOBfamilyMember14}", "${DOBfamilyMember15}", "${DOBfamilyMember16}", "${DOBfamilyMember17}", "${DOBfamilyMember18}", "${DOBfamilyMember19}", "${sourceOrganismName}", "${socialWorkerNameOrganism}", "${socialWorkerPhoneNumberOrganism}", ${socialWorkerPostOrganism}, "${curatelName}", "${socialWorkerNameCuratel}", "${socialWorkerPhoneNumberCuratel}", ${socialWorkerPostCuratel}, now(), now(), date_add(now(), INTERVAL 1 year), ${balance});`;
+  let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance) values ("${firstName}", "${lastName}", "${dateOfBirth}",  "${sex}", "${studentStatus}", "${memberStatus}", "${volunteerStatus}", "${email}", "${homePhoneNumber}", "${cellphoneNumber}", ${homeNumber}, "${homeStreet}", "${appartmentNumber}", "${appartmentLevel}", "${homeEntryCode}", "${homePostalCode}", "${residencyProofStatus}", "${typeOfHouse}", "${sourceOfRevenue}", "${familyComposition}", "${numberOfOtherFamilyMembers}", "${DOBfamilyMember1}", "${DOBfamilyMember2}", "${DOBfamilyMember3}", "${DOBfamilyMember4}", "${DOBfamilyMember5}", "${DOBfamilyMember6}", "${DOBfamilyMember7}", "${DOBfamilyMember8}", "${DOBfamilyMember9}", "${DOBfamilyMember10}", "${DOBfamilyMember11}", "${DOBfamilyMember12}", "${DOBfamilyMember13}", "${DOBfamilyMember14}", "${DOBfamilyMember15}", "${DOBfamilyMember16}", "${DOBfamilyMember17}", "${DOBfamilyMember18}", "${DOBfamilyMember19}", "${sourceOrganismName}", "${socialWorkerNameOrganism}", "${socialWorkerPhoneNumberOrganism}", ${socialWorkerPostOrganism}, "${curatelName}", "${socialWorkerNameCuratel}", "${socialWorkerPhoneNumberCuratel}", ${socialWorkerPostCuratel}, now(), now(), date_add(now(), INTERVAL 1 year), ${
+    balance - 7
+  });`;
   let sqlid = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sqlcheck, (err, result) => {
     if (err) throw err;
@@ -416,9 +418,7 @@ app.post("/api/adddependant", (req, res) => {
               connection.query(sql1, (err, result) => {
                 if (err) throw err;
                 let adminID = result[0].id;
-                let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType) values(now(), week(now()), year(now()), ${dependantID}, ${adminID}, ${
-                  balance + 7
-                }, 'new dependant');`;
+                let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType) values(now(), week(now()), year(now()), ${dependantID}, ${adminID}, ${balance}, 'new dependant');`;
                 connection.query(sqlTransaction, (err, result) => {
                   if (err) throw err;
                 });
@@ -517,7 +517,7 @@ app.post("/api/crm", (req, res) => {
   let dateOfBirth = req.body.dateOfBirth;
 
   //mysql
-  let sql = `select distinct id, numberOfBaskets from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
+  let sql = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
@@ -529,7 +529,6 @@ app.post("/api/crm", (req, res) => {
       res.send({
         message: "success",
         id: result[0].id,
-        numberOfBaskets: result[0].numberOfBaskets,
       });
     }
   });
@@ -540,7 +539,7 @@ app.post("/api/crmid", (req, res) => {
   let id = req.body.id;
 
   //mysql
-  let sql = `select distinct numberOfBaskets, firstName, lastName, dateOfBirth from dependants where id = ${id};`;
+  let sql = `select distinct firstName, lastName, dateOfBirth from dependants where id = ${id};`;
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
@@ -552,7 +551,6 @@ app.post("/api/crmid", (req, res) => {
       res.send({
         message: "success",
         id: id,
-        numberOfBaskets: result[0].numberOfBaskets,
         firstName: result[0].firstName,
         lastName: result[0].lastName,
         dateOfBirth: result[0].dateOfBirth,
@@ -568,7 +566,7 @@ app.post("/api/searchdependant", (req, res) => {
   let dateOfBirth = req.body.dateOfBirth;
 
   //mysql
-  let sql = `select distinct id, numberOfBaskets, email, homeAddress from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
+  let sql = `select distinct id, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
@@ -577,17 +575,82 @@ app.post("/api/searchdependant", (req, res) => {
         id: 0,
       });
     else {
-      res.send({
-        message: "success",
-        id: result[0].id,
-        numberOfBaskets: result[0].numberOfBaskets,
-        email: result[0].email,
-        homeAddress: result[0].homeAddress,
-      });
+      values = result[0];
+      values.message = "success";
+      values.registrationDate = `${values.registrationDate}`;
+      values.lastRenewment = `${values.lastRenewment}`;
+      values.expirationDate = `${values.expirationDate}`;
+      res.send(values);
     }
   });
 });
 
+app.post("/api/modifydependant", (req, res) => {
+  let id = req.body.id;
+  let sex = req.body.sex;
+  let studentStatus = req.body.studentStatus;
+  let memberStatus = req.body.memberStatus;
+  let volunteerStatus = req.body.volunteerStatus;
+  let email = req.body.email;
+  let homePhoneNumber = req.body.homePhoneNumber;
+  let cellphoneNumber = req.body.cellphoneNumber;
+  let homeNumber = req.body.homeNumber;
+  let homeStreet = req.body.homeStreet;
+  let appartmentNumber = req.body.appartmentNumber;
+  let appartmentLevel = req.body.appartmentLevel;
+  let homeEntryCode = req.body.homeEntryCode;
+  let homePostalCode = req.body.homePostalCode;
+  let residencyProofStatus = req.body.residencyProofStatus;
+  let typeOfHouse = req.body.typeOfHouse;
+  let sourceOfRevenue = req.body.sourceOfRevenue;
+  let familyComposition = req.body.familyComposition;
+  let numberOfOtherFamilyMembers = req.body.numberOfOtherFamilyMembers;
+  let DOBfamilyMember1 = req.body.DOBfamilyMember1;
+  let DOBfamilyMember2 = req.body.DOBfamilyMember2;
+  let DOBfamilyMember3 = req.body.DOBfamilyMember3;
+  let DOBfamilyMember4 = req.body.DOBfamilyMember4;
+  let DOBfamilyMember5 = req.body.DOBfamilyMember5;
+  let DOBfamilyMember6 = req.body.DOBfamilyMember6;
+  let DOBfamilyMember7 = req.body.DOBfamilyMember7;
+  let DOBfamilyMember8 = req.body.DOBfamilyMember8;
+  let DOBfamilyMember9 = req.body.DOBfamilyMember9;
+  let DOBfamilyMember10 = req.body.DOBfamilyMember10;
+  let DOBfamilyMember11 = req.body.DOBfamilyMember11;
+  let DOBfamilyMember12 = req.body.DOBfamilyMember12;
+  let DOBfamilyMember13 = req.body.DOBfamilyMember13;
+  let DOBfamilyMember14 = req.body.DOBfamilyMember14;
+  let DOBfamilyMember15 = req.body.DOBfamilyMember15;
+  let DOBfamilyMember16 = req.body.DOBfamilyMember16;
+  let DOBfamilyMember17 = req.body.DOBfamilyMember17;
+  let DOBfamilyMember18 = req.body.DOBfamilyMember18;
+  let DOBfamilyMember19 = req.body.DOBfamilyMember19;
+  let sourceOrganismName = req.body.sourceOrganismName;
+  let socialWorkerNameOrganism = req.body.socialWorkerNameOrganism;
+  let socialWorkerPhoneNumberOrganism =
+    req.body.socialWorkerPhoneNumberOrganism;
+  let socialWorkerPostOrganism = req.body.socialWorkerPostOrganism;
+  let curatelName = req.body.curatelName;
+  let socialWorkerNameCuratel = req.body.socialWorkerNameCuratel;
+  let socialWorkerPhoneNumberCuratel = req.body.socialWorkerPhoneNumberCuratel;
+  let socialWorkerPostCuratel = req.body.socialWorkerPostCuratel;
+  let curuser = req.body.curuser;
+
+  let condition = authCheck(curuser);
+  if (condition == false) {
+    res.send("please stop trying to hack our system");
+    return;
+  }
+
+  //mysql
+  let sqlchange = `UPDATE dependants SET sex = "${sex}", studentStatus = "${studentStatus}", memberStatus = "${memberStatus}", volunteerStatus = "${volunteerStatus}", email = "${email}", homePhoneNumber = "${homePhoneNumber}", cellphoneNumber = "${cellphoneNumber}", homeNumber = "${homeNumber}", homeStreet = "${homeStreet}", appartmentNumber = "${appartmentNumber}", appartmentLevel = "${appartmentLevel}", homeEntryCode = "${homeEntryCode}", homePostalCode = "${homePostalCode}", residencyProofStatus = "${residencyProofStatus}", typeOfHouse = "${typeOfHouse}", sourceOfRevenue = "${sourceOfRevenue}", familyComposition = "${familyComposition}", numberOfOtherFamilyMembers = "${numberOfOtherFamilyMembers}", DOBfamilyMember1 = "${DOBfamilyMember1}", DOBfamilyMember2 = "${DOBfamilyMember2}", DOBfamilyMember3 = "${DOBfamilyMember3}", DOBfamilyMember4 = "${DOBfamilyMember4}", DOBfamilyMember5 = "${DOBfamilyMember5}", DOBfamilyMember6 = "${DOBfamilyMember6}", DOBfamilyMember7 = "${DOBfamilyMember7}", DOBfamilyMember8 = "${DOBfamilyMember8}", DOBfamilyMember9 = "${DOBfamilyMember9}", DOBfamilyMember10 = "${DOBfamilyMember10}", DOBfamilyMember11 = "${DOBfamilyMember11}", DOBfamilyMember12 = "${DOBfamilyMember12}", DOBfamilyMember13 = "${DOBfamilyMember13}", DOBfamilyMember14 = "${DOBfamilyMember14}", DOBfamilyMember15 = "${DOBfamilyMember15}", DOBfamilyMember16 = "${DOBfamilyMember16}", DOBfamilyMember17 = "${DOBfamilyMember17}", DOBfamilyMember18 = "${DOBfamilyMember18}", DOBfamilyMember19 = "${DOBfamilyMember19}", sourceOrganismName = "${sourceOrganismName}", socialWorkerNameOrganism = "${socialWorkerNameOrganism}", socialWorkerPhoneNumberOrganism = "${socialWorkerPhoneNumberOrganism}", socialWorkerPostOrganism  = "${socialWorkerPostOrganism}", curatelName  = "${curatelName}", socialWorkerNameCuratel  = "${socialWorkerNameCuratel}", socialWorkerPhoneNumberCuratel = "${socialWorkerPhoneNumberCuratel}", socialWorkerPostCuratel = "${socialWorkerPostCuratel}" WHERE id = ${id};`;
+  connection.query(sqlchange, (err, result) => {
+    if (err) throw err;
+    if (result.affectedRows <= 0) res.send({ message: "failure" });
+    else res.send({ message: "success" });
+  });
+});
+
+/*
 //add a basket api
 app.post("/api/addbasket", (req, res) => {
   let id = req.body.id;
@@ -639,6 +702,8 @@ app.post("/api/removebasket", (req, res) => {
     });
   });
 });
+
+*/
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //support functions

@@ -29,31 +29,6 @@ export const SearchDependant = () => {
       return <Redirect to="/auth" />;
   };
 
-  const onSubmit = (values) => {
-    if (redux.store.getState().dependants.numberOfBaskets > 2) {
-      alert(
-        `Ce dépendant a déjà reçu ses 3 paniers, il ne peut pas en recevoir d'autres`
-      );
-      return;
-    }
-    axios
-      .post("/api/addbasket", redux.store.getState().dependants)
-      .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        if (res.data === "success") {
-          redux.store.dispatch(redux.setDependants([]));
-          alert("Panier ajouté avec succès");
-          onChange(values);
-        } else
-          alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
-          );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const onChange = (values) => {
     axios
       .post("/api/searchdependant", values)
@@ -65,16 +40,70 @@ export const SearchDependant = () => {
           ).innerHTML = `Ce dépendant n'existe pas`;
           document.getElementById("image-searchDependant").src = "";
         } else if (res.data.message === "success") {
-          redux.store.dispatch(
-            redux.setDependants({
-              id: res.data.id,
-              numberOfBaskets: res.data.numberOfBaskets,
-              email: res.data.email,
-            })
-          );
-          document.getElementById(
-            "message-searchDependant"
-          ).innerHTML = `Ce dépendant existe, il a reçu ${res.data.numberOfBaskets} paniers -- ${res.data.homeAddress} -- ${res.data.email}`;
+          let values = res.data;
+          redux.store.dispatch(redux.setDependants(values));
+          document.getElementById("buttons-searchDependants").style.display =
+            "flex";
+          document.getElementById("message-searchDependant").innerHTML = `
+          <div>
+            <br></br>
+            <br></br>
+            <h1>Informations sur le dépendant</h1>
+            <br></br>
+            <p>Sexe: ${res.data.sex}</p>
+            <p>Statut d'étudiant: ${res.data.studentStatus}</p>
+            <p>Statut de membre: ${res.data.memberStatus}</p>
+            <p>Statut de bénévole: ${res.data.volunteerStatus}</p>
+            <p>--------------------------------------------------------------------------------------------------------------</p>
+            <p>Sexe: ${res.data.sex}</p>
+            <p>Courriel: ${res.data.email}</p>
+            <p>Numéro de téléphone à la maison: ${res.data.homePhoneNumber}</p>
+            <p>Numéro de téléphone cellulaire: ${res.data.cellphoneNumber}</p>
+            <p>Numéro de porte: ${res.data.homeNumber}</p>
+            <p>Rue: ${res.data.homeStreet}</p>
+            <p>Numéro d'appartement: ${res.data.appartmentNumber}</p>
+            <p>Étage: ${res.data.appartmentLevel}</p>
+            <p>Code de la sonnette: ${res.data.homeEntryCode}</p>
+            <p>Code Postal: ${res.data.homePostalCode}</p>
+            <p>Preuve de résidence montrée: ${res.data.residencyProofStatus}</p>
+            <p>Type de logement: ${res.data.typeOfHouse}</p>
+            <p>Source de revenu: ${res.data.sourceOfRevenue}</p>
+            <p>Composition du foyer: ${res.data.familyComposition}</p>
+            <p>Nombre de personnes vivant avec ce dépendant: ${res.data.numberOfOtherFamilyMembers}</p>
+            <p>Date de naissance du membre de la famille 1: ${res.data.DOBfamilyMember1}</p>
+            <p>Date de naissance du membre de la famille 2: ${res.data.DOBfamilyMember2}</p>
+            <p>Date de naissance du membre de la famille 3: ${res.data.DOBfamilyMember3}</p>
+            <p>Date de naissance du membre de la famille 4: ${res.data.DOBfamilyMember4}</p>
+            <p>Date de naissance du membre de la famille 5: ${res.data.DOBfamilyMember5}</p>
+            <p>Date de naissance du membre de la famille 6: ${res.data.DOBfamilyMember6}</p>
+            <p>Date de naissance du membre de la famille 7: ${res.data.DOBfamilyMember7}</p>
+            <p>Date de naissance du membre de la famille 8: ${res.data.DOBfamilyMember8}</p>
+            <p>Date de naissance du membre de la famille 9: ${res.data.DOBfamilyMember9}</p>
+            <p>Date de naissance du membre de la famille 10: ${res.data.DOBfamilyMember10}</p>
+            <p>Date de naissance du membre de la famille 11: ${res.data.DOBfamilyMember11}</p>
+            <p>Date de naissance du membre de la famille 12: ${res.data.DOBfamilyMember12}</p>
+            <p>Date de naissance du membre de la famille 13: ${res.data.DOBfamilyMember13}</p>
+            <p>Date de naissance du membre de la famille 14: ${res.data.DOBfamilyMember14}</p>
+            <p>Date de naissance du membre de la famille 15: ${res.data.DOBfamilyMember15}</p>
+            <p>Date de naissance du membre de la famille 16: ${res.data.DOBfamilyMember16}</p>
+            <p>Date de naissance du membre de la famille 17: ${res.data.DOBfamilyMember17}</p>
+            <p>Date de naissance du membre de la famille 18: ${res.data.DOBfamilyMember18}</p>
+            <p>Date de naissance du membre de la famille 19: ${res.data.DOBfamilyMember19}</p>
+            <p>Organisme ressource et/ou qui a référé le membre (comme la CNEEST ou le CLSC): ${res.data.sourceOrganismName}</p>
+            <p>Nom de l’intervenant: ${res.data.socialWorkerNameOrganism}</p>
+            <p>Numéro de Téléphone de l’intervenant: ${res.data.socialWorkerPhoneNumberOrganism}</p>
+            <p>Poste: ${res.data.socialWorkerPostOrganism}</p>
+            <p>Curatel: ${res.data.curatelName}</p>
+            <p>Nom de l’intervenant: ${res.data.socialWorkerNameCuratel}</p>
+            <p>Numéro de Téléphone de l’intervenant: ${res.data.socialWorkerPhoneNumberCuratel}</p>
+            <p>Poste: ${res.data.socialWorkerPostCuratel}</p>
+            <p>Date d'inscription: ${res.data.registrationDate}</p>
+            <p>Dernier renouvellement de la carte de membre: ${res.data.lastRenewment}</p>
+            <p>Date d'expiration de la carte de membre: ${res.data.expirationDate}</p>
+            <p>Balance du compte: ${res.data.balance}</p>
+            <br></br>
+          </div>
+          `;
           showQR(res.data.id, undefined);
         } else
           document.getElementById(
@@ -96,37 +125,6 @@ export const SearchDependant = () => {
     image.style.display = "block";
     if (email === null || email === "" || email === undefined) return;
     window.open(`mailto:${email}?subject=QRcode&body=${img}`);
-  };
-
-  const removeBasket = () => {
-    if (redux.store.getState().dependants.numberOfBaskets <= 0) {
-      alert(`Ce dépendant a 0 paniers, vous ne pouvez pas en retirer plus.`);
-      return;
-    }
-    let values = redux.store.getState().dependants;
-    values.curuser = redux.store.getState().username;
-    axios
-      .post("/api/removebasket", values)
-      .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        if (res.data === "success") {
-          redux.store.dispatch(redux.setDependants([]));
-          alert("Panier retiré avec succès");
-          onChange({
-            firstName: document.getElementById("firstName-searchDependant")
-              .value,
-            lastName: document.getElementById("lastName-searchDependant").value,
-            dateOfBirth: document.getElementById("dateOfBirth-searchDependant")
-              .value,
-          });
-        } else
-          alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
-          );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const removeDependant = () => {
@@ -173,16 +171,16 @@ export const SearchDependant = () => {
     );
   };
 
+  const goToModifyDependant = () => {
+    history.push("/modifydependant");
+  };
+
   return (
     <div className="searchDependant">
       <script> {authCheck()}</script>
       <BackButton to="/dependants" />
       <div className="form-searchDependant">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          onChange={handleSubmit(onChange)}
-          id="form-searchDependant"
-        >
+        <form onChange={handleSubmit(onChange)} id="form-searchDependant">
           <div className="input-wrapper-searchDependant">
             <label>Prénom:</label>
             <br></br>
@@ -225,23 +223,23 @@ export const SearchDependant = () => {
               ref={register}
             ></input>
           </div>
-          <div className="input-wrapper-searchDependant">
-            <input
-              className="submit-searchDependant"
-              value="Ajouter un panier"
-              type="submit"
-            ></input>
-          </div>
         </form>
-        <div className="buttons-searchDependants">
-          <button className="submit-searchDependant" onClick={removeBasket}>
-            Retirer un panier
-          </button>
+        <div className="buttons-searchDependants" id="buttons-searchDependants">
           <button className="submit-searchDependant" onClick={removeDependant}>
             Supprimer le dépendant
           </button>
           <button className="submit-searchDependant" onClick={sendEmail}>
             Envoyer le QR-code par courriel
+          </button>
+          <br></br>
+          <button
+            className="submit-searchDependant"
+            onClick={goToModifyDependant}
+          >
+            Modifier le compte
+          </button>
+          <button className="submit-searchDependant" onClick={sendEmail}>
+            Renouveler carte de membre
           </button>
         </div>
         <br></br>
