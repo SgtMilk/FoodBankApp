@@ -175,6 +175,14 @@ export const SearchDependant = () => {
     history.push("/modifydependant");
   };
 
+  const goToRenewCard = () => {
+    history.push("/renewcard");
+  };
+
+  const goToDebt = () => {
+    history.push("/debt");
+  };
+
   return (
     <div className="searchDependant">
       <script> {authCheck()}</script>
@@ -238,8 +246,11 @@ export const SearchDependant = () => {
           >
             Modifier le compte
           </button>
-          <button className="submit-searchDependant" onClick={sendEmail}>
+          <button className="submit-searchDependant" onClick={goToRenewCard}>
             Renouveler carte de membre
+          </button>
+          <button className="submit-searchDependant" onClick={goToDebt}>
+            Ajouter/Retirer des fonds
           </button>
         </div>
         <br></br>

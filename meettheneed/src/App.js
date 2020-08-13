@@ -21,6 +21,8 @@ import { AddDependant } from "./screens/AddDependant";
 import { RemoveDependant } from "./screens/RemoveDependant";
 import { SearchDependant } from "./screens/SearchDependant";
 import { ModifyDependant } from "./screens/ModifyDependant";
+import { RenewCard } from "./screens/RenewCard";
+import { Debt } from "./screens/Debt";
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
           component={RemoveAdministrator}
         />
         <Route path="/modifydependant" exact component={ModifyDependant} />
+        <Route path="/renewcard" exact component={RenewCard} />
+        <Route path="/debt" exact component={Debt} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>

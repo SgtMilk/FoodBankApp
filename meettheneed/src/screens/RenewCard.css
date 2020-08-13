@@ -4,23 +4,21 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-.modifyDependant {
+.renewCard {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100vh;
   width: 100%;
   user-select: none;
-  padding-top: 10%;
-  padding-bottom: 10%;
-  text-align: center;
 }
 
-.form-modifyDependant {
+.form-renewCard {
   width: 75%;
 }
 
-.input-wrapper-modifyDependant {
+.input-wrapper-renewCard {
   padding-top: 2%;
   padding-bottom: 2%;
   text-align: center;
@@ -29,8 +27,7 @@
   font-weight: 500;
 }
 
-.input-modifyDependant,
-select {
+.input-renewCard {
   all: unset;
   background-color: rgb(189, 189, 189);
   width: 100%;
@@ -40,14 +37,13 @@ select {
   border-radius: 2em;
   width: 50%;
   margin-top: 1%;
-  text-align-last: center;
 }
 
-.link-modifyDependant {
+.link-renewCard {
   all: unset;
 }
 
-.submit-modifyDependant {
+.submit-renewCard {
   all: unset;
   padding: 1%;
   padding-right: 3%;
@@ -65,19 +61,15 @@ input::-moz-focus-inner {
   outline: none;
 }
 
-.submit-modifyDependant:hover {
+.submit-renewCard:hover {
   background-color: rgb(230, 230, 230);
   color: rgb(2, 129, 2);
   border: 0.1em solid grey;
 }
 
-#message-modifyDependant {
+#message-renewCard {
   text-align: center;
   font-family: "Lato";
   color: rgb(66, 66, 66);
   user-select: none;
-}
-
-#image-modifyDependant {
-  margin: auto;
 }
