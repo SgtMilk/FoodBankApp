@@ -5,26 +5,23 @@
  */
 
 import React from "react";
-import "./Dependant.css";
+import "./Livraison.css";
 import redux from "../index";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-export const Dependant = (name) => {
+export const Livraison = (name) => {
   const history = useHistory();
 
-  const firstName = redux.store.getState().dependants[name.props].firstName;
-  const lastName = redux.store.getState().dependants[name.props].lastName;
-  const dateOfBirth = redux.store.getState().dependants[name.props].dateOfBirth;
+  const dependant = redux.store.getState().dependants[name.props].dependant;
+  const address = redux.store.getState().dependants[name.props].address;
 
   const deleteDependant = () => {
-    alert("Êtes-vous sûr que vous voulez supprimer ce dépendant?");
+    alert("Êtes-vous sûr que cette livraison a été effectuée?");
     axios
-      .post("/api/removedependant", {
-        firstName: firstName,
-        lastName: lastName,
-        dateOfBirth: dateOfBirth,
+      .post("/api/completelivraison", {
         curuser: redux.store.getState().username,
+        id: redux.store.getState().dependants[name.props].id,
       })
       .then((res) => {
         if (res.data !== "success") {
@@ -35,13 +32,13 @@ export const Dependant = (name) => {
         }
         console.log("succeded");
         axios
-          .post("/api/alldependants", {
+          .post("/api/alllivraisons", {
             curuser: redux.store.getState().username,
           })
           .then((res) => {
             console.log(`statusCode: ${res.statusCode}`);
             redux.store.dispatch(redux.setDependants(res.data));
-            history.push("/removedependant");
+            history.push("/livraisons");
           })
           .catch((error) => {
             console.error(error);
@@ -53,12 +50,16 @@ export const Dependant = (name) => {
   };
 
   return (
-    <li id="dependant">
-      <div className="inside-dependant">
-        <p>{`${lastName}, ${firstName} (${dateOfBirth})`}</p>
-        <button className="delete-dependant" onClick={deleteDependant}>
-          supprimer
-        </button>
+    <li id="livraison">
+      <div className="inside-livraison">
+        <div className="inside-inside-livraison">
+          <p>{dependant}</p>
+          <button className="delete-livraison" onClick={deleteDependant}>
+            supprimer
+          </button>
+          <br></br>
+        </div>
+        <p>{address}</p>
       </div>
     </li>
   );

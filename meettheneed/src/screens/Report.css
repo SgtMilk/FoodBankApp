@@ -1,0 +1,75 @@
+/*
+ * Copyright (C) 2020 Alix Routhier-Lalonde
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+.report {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  user-select: none;
+}
+
+.form-report {
+  width: 75%;
+}
+
+.input-wrapper-report {
+  padding-top: 2%;
+  padding-bottom: 2%;
+  text-align: center;
+  width: 100%;
+  font-size: 150%;
+  font-weight: 500;
+}
+
+.input-report {
+  all: unset;
+  background-color: rgb(189, 189, 189);
+  width: 100%;
+  padding: 1%;
+  padding-right: 5%;
+  padding-left: 5%;
+  border-radius: 2em;
+  width: 50%;
+  margin-top: 1%;
+}
+
+.link-report {
+  all: unset;
+}
+
+.submit-report {
+  all: unset;
+  padding: 1%;
+  padding-right: 3%;
+  padding-left: 3%;
+  border-radius: 2em;
+  font-size: 110%;
+  font-weight: 500;
+  background-color: rgb(189, 189, 189);
+  transition: 0.3s;
+  border: 0.1em solid rgb(189, 189, 189);
+}
+
+input::-moz-focus-inner {
+  border: none;
+  outline: none;
+}
+
+.submit-report:hover {
+  background-color: rgb(230, 230, 230);
+  color: rgb(2, 129, 2);
+  border: 0.1em solid grey;
+}
+
+#message-report {
+  text-align: center;
+  font-family: "Lato";
+  color: rgb(66, 66, 66);
+  user-select: none;
+}

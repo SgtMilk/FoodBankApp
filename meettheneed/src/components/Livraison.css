@@ -1,0 +1,65 @@
+/*
+ * Copyright (C) 2020 Alix Routhier-Lalonde
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
+
+#livraison {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  border: 0.1em solid grey;
+  border-radius: 1em;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 30em;
+  height: 10em;
+  font-size: 125%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+.inside-livraison {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.inside-inside-livraison {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.delete-livraison {
+  all: unset;
+  padding: 1%;
+  width: 5em;
+  height: 1.25em;
+  border-radius: 0.5em;
+  font-size: 110%;
+  font-weight: 500;
+  background-color: rgb(189, 189, 189);
+  transition: 0.3s;
+  border: 0.1em solid rgb(189, 189, 189);
+}
+
+.delete-livraison::-moz-focus-inner {
+  border: none;
+  outline: none;
+}
+
+.delete-livraison:hover {
+  background-color: rgb(230, 230, 230);
+  color: rgb(2, 129, 2);
+  border: 0.1em solid grey;
+}

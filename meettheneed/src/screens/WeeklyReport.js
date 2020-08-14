@@ -5,16 +5,15 @@
  */
 
 import React from "react";
-import "./RenewCard.css";
+import "./Report.css";
 import { BackButton } from "../components/BackButton";
 import { useForm } from "react-hook-form";
 import redux from "../index";
-import { useHistory, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 const axios = require("axios");
+const FileDownload = require("js-file-download");
 
-export const RenewCard = () => {
-  let history = useHistory();
-
+export const WeeklyReport = () => {
   const { handleSubmit, register } = useForm();
 
   const authCheck = () => {
@@ -30,50 +29,43 @@ export const RenewCard = () => {
   };
 
   const onSubmit = (values) => {
-    values.id = redux.store.getState().dependants.id;
     values.curuser = redux.store.getState().username;
     axios
-      .post("/api/renewcard", values)
-      .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        if (res.data.message === "failure")
+      .post("/api/weeklyreport", values)
+      .then(function (res) {
+        if (res.data.message === "failure") {
           alert(
-            "Une erreur s'est produite. Veuillez contacter un développeur de Meet the Need."
+            `Veuillez contacter un développeur de Meet the Need. Une erreur s'est produite.`
           );
-        else if (res.data.message === "success") {
-          alert("Le compte a été modifié avec succès");
-          redux.store.dispatch(redux.setDependants({}));
-          history.push("/searchdependants");
+          return;
         }
+        FileDownload(res.data, "report.csv");
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(function (error) {
+        console.log(error);
       });
   };
 
   return (
-    <div className="renewCard">
+    <div className="report">
       <script> {authCheck()}</script>
-      <BackButton to="/administrateurs" />
-      <div className="form-renewCard">
+      <BackButton to="/rapports" />
+      <div className="form-report">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-wrapper-renewCard">
-            <label>
-              'Nombre d'argent donné (négatif = le centre donne de l'argent
-              audépendant): '
-            </label>
+          <div className="input-wrapper-report">
+            <label>Semaine</label>
             <br></br>
             <input
-              name="balance"
-              className="input-renewCard"
-              type="number"
+              name="week"
+              className="input-report"
+              type="week"
               required
               ref={register}
             ></input>
           </div>
-          <div className="input-wrapper-renewCard">
+          <div className="input-wrapper-report">
             <input
-              className="submit-renewCard"
+              className="submit-report"
               value="Soumettre"
               type="submit"
             ></input>

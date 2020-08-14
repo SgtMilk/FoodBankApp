@@ -8,6 +8,7 @@ import React from "react";
 import "./Dashboard.css";
 import redux from "../index";
 import { Redirect, useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const Dashboard = () => {
   let history = useHistory();
@@ -41,6 +42,40 @@ export const Dashboard = () => {
     history.push("/adddependant");
   };
 
+  const goLivraisons = () => {
+    axios
+      .post("/api/alllivraisons", {
+        curuser: redux.store.getState().username,
+      })
+      .then(function (res) {
+        console.log(res);
+        redux.store.dispatch(redux.setDependants(res.data));
+        history.push("/livraisons");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const goRapports = () => {
+    history.push("/rapports");
+  };
+
+  const goChangePrices = () => {
+    axios
+      .post("/api/allprices", {
+        curuser: redux.store.getState().username,
+      })
+      .then(function (res) {
+        console.log(res);
+        redux.store.dispatch(redux.setDependants(res.data));
+        history.push("/changeprices");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="dashboard">
       <script> {authCheck()}</script>
@@ -55,6 +90,15 @@ export const Dashboard = () => {
       </button>
       <button className="button-dashboard" onClick={goAddDependant}>
         Ajouter un dépendant
+      </button>
+      <button className="button-dashboard" onClick={goLivraisons}>
+        Livraisons
+      </button>
+      <button className="button-dashboard" onClick={goRapports}>
+        Rapports
+      </button>
+      <button className="button-dashboard" onClick={goChangePrices}>
+        Changer les prix
       </button>
     </div>
   );

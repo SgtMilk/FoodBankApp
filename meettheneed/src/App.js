@@ -23,6 +23,12 @@ import { SearchDependant } from "./screens/SearchDependant";
 import { ModifyDependant } from "./screens/ModifyDependant";
 import { RenewCard } from "./screens/RenewCard";
 import { Debt } from "./screens/Debt";
+import { Livraisons } from "./screens/Livraisons";
+import { Rapports } from "./screens/Rapports";
+import { ChangePrices } from "./screens/ChangePrices";
+import { YearlyReport } from "./screens/YearlyReport";
+import { WeeklyReport } from "./screens/WeeklyReport";
+import { DailyReport } from "./screens/DailyReport";
 
 function App() {
   return (
@@ -47,6 +53,12 @@ function App() {
         <Route path="/modifydependant" exact component={ModifyDependant} />
         <Route path="/renewcard" exact component={RenewCard} />
         <Route path="/debt" exact component={Debt} />
+        <Route path="/rapports" exact component={Rapports} />
+        <Route path="/livraisons" exact component={Livraisons} />
+        <Route path="/changeprices" exact component={ChangePrices} />
+        <Route path="/yearlyreport" exact component={YearlyReport} />
+        <Route path="/weeklyreport" exact component={WeeklyReport} />
+        <Route path="/dailyreport" exact component={DailyReport} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>

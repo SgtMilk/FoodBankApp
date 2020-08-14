@@ -4,7 +4,7 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-.removeAdministrator {
+.livraisons {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
   margin-top: 5%;
 }
 
-.list-removeAdministrator {
+.list-livraisons {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@
   padding-bottom: 5%;
 }
 
-.back-button-div-removeAdministrator {
+.back-button-div-livraisons {
   display: flex;
   flex-direction: column;
   align-items: center;
