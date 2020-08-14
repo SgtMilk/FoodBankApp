@@ -50,6 +50,8 @@
   align-items: center;
   justify-content: center;
   all: unset;
+  text-align: center;
+  wrap: nowrap;
   padding: 1%;
   padding-right: 3%;
   padding-left: 3%;

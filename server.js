@@ -198,6 +198,10 @@ app.post("/api/addadministrator", (req, res) => {
         } else {
           res.send("success");
           console.log(`new admin: ${username}`);
+          let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${username}', '${curuser}', ${0}, 'add admin', '', '', '');`;
+          connection.query(sqlTransaction, (err, result) => {
+            if (err) throw err;
+          });
         }
       });
     }
@@ -249,7 +253,13 @@ app.post("/api/removeadministrator", (req, res) => {
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result.affectedRows <= 0) res.send("failure");
-    else res.send("success");
+    else {
+      res.send("success");
+      let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${username}', '${curuser}', ${0}, 'remove admin', '', '', '');`;
+      connection.query(sqlTransaction, (err, result) => {
+        if (err) throw err;
+      });
+    }
   });
 });
 
@@ -307,61 +317,6 @@ app.post("/api/adddependant", (req, res) => {
   let balance = req.body.balance;
   let curuser = req.body.curuser;
 
-  let allParameters = [
-    firstName,
-    lastName,
-    dateOfBirth,
-    sex,
-    studentStatus,
-    memberStatus,
-    volunteerStatus,
-    email,
-    homePhoneNumber,
-    cellphoneNumber,
-    homeNumber,
-    homeStreet,
-    appartmentNumber,
-    appartmentLevel,
-    homeEntryCode,
-    homePostalCode,
-    residencyProofStatus,
-    typeOfHouse,
-    sourceOfRevenue,
-    familyComposition,
-    numberOfOtherFamilyMembers,
-    DOBfamilyMember1,
-    DOBfamilyMember2,
-    DOBfamilyMember3,
-    DOBfamilyMember4,
-    DOBfamilyMember5,
-    DOBfamilyMember6,
-    DOBfamilyMember7,
-    DOBfamilyMember8,
-    DOBfamilyMember9,
-    DOBfamilyMember10,
-    DOBfamilyMember11,
-    DOBfamilyMember12,
-    DOBfamilyMember13,
-    DOBfamilyMember14,
-    DOBfamilyMember15,
-    DOBfamilyMember16,
-    DOBfamilyMember17,
-    DOBfamilyMember18,
-    DOBfamilyMember19,
-    sourceOrganismName,
-    socialWorkerNameOrganism,
-    socialWorkerPhoneNumberOrganism,
-    socialWorkerPostOrganism,
-    curatelName,
-    socialWorkerNameCuratel,
-    socialWorkerPhoneNumberCuratel,
-    socialWorkerPostCuratel,
-    balance,
-    curuser,
-  ];
-
-  checkXXS(allParameters);
-
   if (authCheck(curuser) == false) {
     res.send("please stop trying to hack our system");
     return;
@@ -388,46 +343,48 @@ app.post("/api/adddependant", (req, res) => {
 
   //mysql
   let sqlcheck = `select distinct firstName from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
-  let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance) values ("${firstName}", "${lastName}", "${dateOfBirth}",  "${sex}", "${studentStatus}", "${memberStatus}", "${volunteerStatus}", "${email}", "${homePhoneNumber}", "${cellphoneNumber}", ${homeNumber}, "${homeStreet}", "${appartmentNumber}", "${appartmentLevel}", "${homeEntryCode}", "${homePostalCode}", "${residencyProofStatus}", "${typeOfHouse}", "${sourceOfRevenue}", "${familyComposition}", "${numberOfOtherFamilyMembers}", "${DOBfamilyMember1}", "${DOBfamilyMember2}", "${DOBfamilyMember3}", "${DOBfamilyMember4}", "${DOBfamilyMember5}", "${DOBfamilyMember6}", "${DOBfamilyMember7}", "${DOBfamilyMember8}", "${DOBfamilyMember9}", "${DOBfamilyMember10}", "${DOBfamilyMember11}", "${DOBfamilyMember12}", "${DOBfamilyMember13}", "${DOBfamilyMember14}", "${DOBfamilyMember15}", "${DOBfamilyMember16}", "${DOBfamilyMember17}", "${DOBfamilyMember18}", "${DOBfamilyMember19}", "${sourceOrganismName}", "${socialWorkerNameOrganism}", "${socialWorkerPhoneNumberOrganism}", ${socialWorkerPostOrganism}, "${curatelName}", "${socialWorkerNameCuratel}", "${socialWorkerPhoneNumberCuratel}", ${socialWorkerPostCuratel}, now(), now(), date_add(now(), INTERVAL 1 year), ${
-    balance - 7
-  });`;
   let sqlid = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
-  connection.query(sqlcheck, (err, result) => {
+  sql3 = "select * from variables where id = 1;";
+  connection.query(sql3, (err, result) => {
     if (err) throw err;
-    if (result[0] != null) {
-      console.log(
-        `new dependant: dependant ${firstName} ${lastName} already taken -- no new account created`
-      );
-      res.send({ message: "already in database" });
-    } else {
-      connection.query(sqladd, (err, result) => {
-        if (err) throw err;
-        if (result.affectedRows === 0)
-          res.send({ message: "problem with system" });
-        else {
-          connection.query(sqlid, (err, result) => {
-            if (result[0] == null) res.send({ message: "problem with system" });
-            else {
-              res.send({
-                message: "success",
-                id: result[0].id,
-                email: email,
-              });
-              let dependantID = result[0].id;
-              let sql1 = `select id from admins where username = '${curuser}';`;
-              connection.query(sql1, (err, result) => {
-                if (err) throw err;
-                let adminID = result[0].id;
-                let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType) values(now(), week(now()), year(now()), ${dependantID}, ${adminID}, ${balance}, 'new dependant');`;
+    if (result[0] == null) throw console.error();
+    let price = result[0].priceMembership;
+    connection.query(sqlcheck, (err, result) => {
+      if (err) throw err;
+      if (result[0] != null) {
+        console.log(
+          `new dependant: dependant ${firstName} ${lastName} already taken -- no new account created`
+        );
+        res.send({ message: "already in database" });
+      } else {
+        let sqladd = `insert into dependants (firstName, lastName, dateOfBirth, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance) values ("${firstName}", "${lastName}", "${dateOfBirth}",  "${sex}", "${studentStatus}", "${memberStatus}", "${volunteerStatus}", "${email}", "${homePhoneNumber}", "${cellphoneNumber}", ${homeNumber}, "${homeStreet}", "${appartmentNumber}", "${appartmentLevel}", "${homeEntryCode}", "${homePostalCode}", "${residencyProofStatus}", "${typeOfHouse}", "${sourceOfRevenue}", "${familyComposition}", "${numberOfOtherFamilyMembers}", "${DOBfamilyMember1}", "${DOBfamilyMember2}", "${DOBfamilyMember3}", "${DOBfamilyMember4}", "${DOBfamilyMember5}", "${DOBfamilyMember6}", "${DOBfamilyMember7}", "${DOBfamilyMember8}", "${DOBfamilyMember9}", "${DOBfamilyMember10}", "${DOBfamilyMember11}", "${DOBfamilyMember12}", "${DOBfamilyMember13}", "${DOBfamilyMember14}", "${DOBfamilyMember15}", "${DOBfamilyMember16}", "${DOBfamilyMember17}", "${DOBfamilyMember18}", "${DOBfamilyMember19}", "${sourceOrganismName}", "${socialWorkerNameOrganism}", "${socialWorkerPhoneNumberOrganism}", ${socialWorkerPostOrganism}, "${curatelName}", "${socialWorkerNameCuratel}", "${socialWorkerPhoneNumberCuratel}", ${socialWorkerPostCuratel}, now(), now(), date_add(now(), INTERVAL 1 year), ${
+          balance - price
+        });`;
+        connection.query(sqladd, (err, result) => {
+          if (err) throw err;
+          if (result.affectedRows === 0)
+            res.send({ message: "problem with system" });
+          else {
+            connection.query(sqlid, (err, result) => {
+              if (err) throw err;
+              if (result[0] == null)
+                res.send({ message: "problem with system" });
+              else {
+                res.send({
+                  message: "success",
+                  id: result[0].id,
+                  email: email,
+                });
+                let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${balance}, 'new dependant', '', '', '');`;
                 connection.query(sqlTransaction, (err, result) => {
                   if (err) throw err;
                 });
-              });
-            }
-          });
-        }
-      });
-    }
+              }
+            });
+          }
+        });
+      }
+    });
   });
 });
 
@@ -481,7 +438,13 @@ app.post("/api/removedependant", (req, res) => {
   connection.query(sql, (err, result) => {
     if (err) throw err;
     if (result.affectedRows <= 0) res.send("failure");
-    else res.send("success");
+    else {
+      res.send("success");
+      let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${0}, 'remove dependant', '', '', '');`;
+      connection.query(sqlTransaction, (err, result) => {
+        if (err) throw err;
+      });
+    }
   });
 });
 
@@ -502,11 +465,25 @@ app.post("/api/removedependantid", (req, res) => {
   }
 
   //mysql
-  let sql = `DELETE FROM dependants WHERE id = '${id}';`;
-  connection.query(sql, (err, result) => {
+  let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = ${id};`;
+  connection.query(sql1, (err, result) => {
     if (err) throw err;
-    if (result.affectedRows <= 0) res.send("failure");
-    else res.send("success");
+    if (result[0] == null) res.send("failure");
+    let firstName = result[0].firstName;
+    let lastName = result[0].lastName;
+    let dateOfBirth = result[0].dateOfBirth;
+    let sql = `DELETE FROM dependants WHERE id = ${id};`;
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      if (result.affectedRows <= 0) res.send("failure");
+      else {
+        res.send("success");
+        let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${0}, 'remove dependant', '', '', '');`;
+        connection.query(sqlTransaction, (err, result) => {
+          if (err) throw err;
+        });
+      }
+    });
   });
 });
 
@@ -517,18 +494,21 @@ app.post("/api/crm", (req, res) => {
   let dateOfBirth = req.body.dateOfBirth;
 
   //mysql
-  let sql = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
-  connection.query(sql, (err, result) => {
+  let sql1 = `select distinct id from dependants where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
+  connection.query(sql1, (err, result) => {
     if (err) throw err;
     if (result[0] == null)
       res.send({
         message: "not there",
-        id: 0,
       });
     else {
-      res.send({
-        message: "success",
-        id: result[0].id,
+      let sql2 = `select id from transactions where currentWeek = week(now()) and currentYear = year(now()) and dependant = '${lastName}, ${firstName} (${dateOfBirth})' and transactionType = 'add basket'`;
+      connection.query(sql2, (err, result) => {
+        if (err) throw err;
+        res.send({
+          message: "success",
+          numberOfBaskets: result.length,
+        });
       });
     }
   });
@@ -545,15 +525,22 @@ app.post("/api/crmid", (req, res) => {
     if (result[0] == null)
       res.send({
         message: "not there",
-        id: 0,
       });
     else {
-      res.send({
-        message: "success",
-        id: id,
-        firstName: result[0].firstName,
-        lastName: result[0].lastName,
-        dateOfBirth: result[0].dateOfBirth,
+      let firstName = result[0].firstName;
+      let lastName = result[0].lastName;
+      let dateOfBirth = result[0].dateOfBirth;
+      id = result[0].id;
+      let sql2 = `select id from transactions where currentWeek = week(now()) and currentYear = year(now()) and dependant = '${lastName}, ${firstName} (${dateOfBirth})' and transactionType = 'add basket'`;
+      connection.query(sql2, (err, result) => {
+        if (err) throw err;
+        res.send({
+          message: "success",
+          numberOfBaskets: result.length,
+          firstName: firstName,
+          lastName: lastName,
+          dateOfBirth: dateOfBirth,
+        });
       });
     }
   });
@@ -646,64 +633,137 @@ app.post("/api/modifydependant", (req, res) => {
   connection.query(sqlchange, (err, result) => {
     if (err) throw err;
     if (result.affectedRows <= 0) res.send({ message: "failure" });
-    else res.send({ message: "success" });
+    else {
+      res.send({ message: "success" });
+      let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = '${id}';`;
+      connection.query(sql1, (err, result) => {
+        if (err) throw err;
+        let firstName = result[0].firstName;
+        let lastName = result[0].lastName;
+        let dateOfBirth = result[0].dateOfBirth;
+        let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${0}, 'change dependant info', '', '', '');`;
+        connection.query(sqlTransaction, (err, result) => {
+          if (err) throw err;
+        });
+      });
+    }
   });
 });
 
-/*
-//add a basket api
-app.post("/api/addbasket", (req, res) => {
+app.post("/api/renewcard", (req, res) => {
   let id = req.body.id;
-
-  //mysql
-  let sqlquery = `select distinct numberOfBaskets, id from dependants where id = ${id};`;
-  connection.query(sqlquery, (err, result) => {
-    if (err) throw err;
-    if (result === []) {
-      res.send("failed");
-      return;
-    }
-    let numberOfBaskets = result[0].numberOfBaskets + 1;
-    if (numberOfBaskets > 3) {
-      res.send("failed");
-      return;
-    }
-    let sql = `UPDATE dependants SET numberOfBaskets = ${numberOfBaskets} WHERE id = ${id}`;
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
-      if (result.affectedRows <= 0) res.send("failed");
-      else res.send("success");
-    });
-  });
-});
-
-app.post("/api/removebasket", (req, res) => {
-  let id = req.body.id;
+  let balance = req.body.balance;
   let curuser = req.body.curuser;
 
+  console.log("renew card");
+
+  let condition = authCheck(curuser);
+  if (condition == false) {
+    res.send("please stop trying to hack our system");
+    return;
+  }
+
   //mysql
-  let sqlquery = `select distinct numberOfBaskets, id from dependants where id = ${id};`;
-  connection.query(sqlquery, (err, result) => {
+  sql3 = "select * from variables where id = 1;";
+  connection.query(sql3, (err, result) => {
     if (err) throw err;
-    if (result === []) {
-      res.send("failed");
-      return;
-    }
-    let numberOfBaskets = result[0].numberOfBaskets - 1;
-    if (numberOfBaskets < 0) {
-      res.send("failed");
-      return;
-    }
-    let sql = `UPDATE dependants SET numberOfBaskets = ${numberOfBaskets} WHERE id = ${id}`;
+    if (result[0] == null) throw console.error();
+    price = result[0].priceMembership;
+    let sql = `update dependants set balance = balance + ${
+      balance - price
+    }, lastRenewment = now(), expirationDate = date_add(now(), INTERVAL 1 year) where id = ${id};`;
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      if (result.affectedRows <= 0) res.send("failed");
-      else res.send("success");
+      if (result.affectedRows <= 0) res.send({ message: "failure" });
+      else {
+        res.send({ message: "success" });
+        let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = '${id}';`;
+        connection.query(sql1, (err, result) => {
+          if (err) throw err;
+          let firstName = result[0].firstName;
+          let lastName = result[0].lastName;
+          let dateOfBirth = result[0].dateOfBirth;
+          let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${balance}, 'card renewed', '', '', '');`;
+          connection.query(sqlTransaction, (err, result) => {
+            if (err) throw err;
+          });
+        });
+      }
     });
   });
 });
 
-*/
+app.post("/api/debt", (req, res) => {
+  let id = req.body.id;
+  let balance = req.body.balance;
+  let curuser = req.body.curuser;
+
+  let condition = authCheck(curuser);
+  if (condition == false) {
+    res.send("please stop trying to hack our system");
+    return;
+  }
+
+  //mysql
+  let sql = `update dependants set balance = balance + ${balance} where id = ${id};`;
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    if (result.affectedRows <= 0) res.send({ message: "failure" });
+    else {
+      res.send({ message: "success" });
+      let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = '${id}';`;
+      connection.query(sql1, (err, result) => {
+        if (err) throw err;
+        let firstName = result[0].firstName;
+        let lastName = result[0].lastName;
+        let dateOfBirth = result[0].dateOfBirth;
+        let sqlTransaction = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', '${curuser}', ${balance}, 'changed balance', '', '', '');`;
+        connection.query(sqlTransaction, (err, result) => {
+          if (err) throw err;
+        });
+      });
+    }
+  });
+});
+
+//add a basket api
+app.post("/api/addbasket", (req, res) => {
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let dateOfBirth = req.body.dateOfBirth;
+  let balance = req.body.balance;
+  let livraison = req.body.livraison;
+  let depannage = req.body.depannage;
+  let christmasBasket = req.body.christmasBasket;
+
+  //mysql
+
+  sql3 = "select * from variables where id = 1;";
+  connection.query(sql3, (err, result) => {
+    if (err) throw err;
+    if (result[0] == null) throw console.error();
+    variables = result[0];
+    let price = choose(depannage, livraison, christmasBasket, variables);
+
+    let sqlquery = `update dependants set balance = balance + ${
+      balance - price
+    } where firstName = '${firstName}' and lastName = '${lastName}' and dateOfBirth = '${dateOfBirth}';`;
+    connection.query(sqlquery, (err, result) => {
+      if (err) throw err;
+      if (result.affectedRows <= 0) {
+        res.send({ message: "failure" });
+        return;
+      } else {
+        let sql2 = `insert into transactions(date_and_time, currentWeek, currentYear, dependant, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), week(now()), year(now()), '${lastName}, ${firstName} (${dateOfBirth})', ${balance}, 'add basket', '${livraison}', '${depannage}', '${christmasBasket}');`;
+        connection.query(sql2, (err, result) => {
+          if (err) throw err;
+          if (result.affectedRows <= 0) res.send({ message: "failure" });
+          else res.send({ message: "success" });
+        });
+      }
+    });
+  });
+});
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //support functions
@@ -733,6 +793,49 @@ function checkXXS(array) {
 function escapeHTML(unsafe_str) {
   return unsafe_str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
+const choose = (depannage, livraison, christmasBasket, variables) => {
+  if (livraison === false && depannage === false && christmasBasket === false)
+    return variables.priceBasket;
+  else if (
+    livraison === true &&
+    depannage === false &&
+    christmasBasket === false
+  )
+    return variables.priceBasketLivraison;
+  else if (
+    livraison === false &&
+    depannage === true &&
+    christmasBasket === false
+  )
+    return variables.priceBasketDepannage;
+  else if (
+    livraison === false &&
+    depannage === false &&
+    christmasBasket === true
+  )
+    return variables.priceBasketChristmas;
+  else if (
+    livraison === true &&
+    depannage === true &&
+    christmasBasket === false
+  )
+    return variables.priceBasketDepannageLivraison;
+  else if (
+    livraison === false &&
+    depannage === true &&
+    christmasBasket === true
+  )
+    return variables.priceBasketDepannageChristmas;
+  else if (
+    livraison === true &&
+    depannage === false &&
+    christmasBasket === true
+  )
+    return variables.priceBasketLivraisonChristmas;
+  else if (livraison === true && depannage === true && christmasBasket === true)
+    return variables.priceBasketDepannageLivraisonChristmas;
+};
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //starting server

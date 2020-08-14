@@ -15,24 +15,16 @@ export const CRMPage = () => {
   const { handleSubmit, register } = useForm();
 
   const onSubmit = (values) => {
-    if (redux.store.getState().dependants.numberOfBaskets > 2) {
-      alert(
-        `Ce dépendant a déjà reçu ses 3 paniers, il ne peut pas en recevoir d'autres`
-      );
-      return;
-    }
     axios
-      .post(
-        "http://raspberrypi.local/api/addbasket",
-        redux.store.getState().dependants
-      )
+      .post("/api/addbasket", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
-        if (res.data === "success") {
+        if (res.data.message === "success") {
           redux.store.dispatch(redux.setDependants([]));
           alert("Panier ajouté avec succès");
           document.getElementById("form-crm").reset();
           document.getElementById("message-crm").innerHTML = ``;
+          document.getElementById("appears-crm").style.visibility = "hidden";
         } else
           alert(
             `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
@@ -48,29 +40,20 @@ export const CRMPage = () => {
       .post("/api/crm", values)
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
-        if (res.data.message === "not there")
+        if (res.data.message === "not there") {
           document.getElementById(
             "message-crm"
-          ).innerHTML = `Ce dépendant n'existe pas`;
-        else if (res.data.message === "success") {
-          redux.store.dispatch(
-            redux.setDependants({
-              id: res.data.id,
-              numberOfBaskets: res.data.numberOfBaskets,
-            })
-          );
-          if (redux.store.getState().dependants.numberOfBaskets < 3)
-            document.getElementById(
-              "message-crm"
-            ).innerHTML = `Ce dépendant existe, il peut recevoir un panier`;
-          else
-            document.getElementById(
-              "message-crm"
-            ).innerHTML = `Ce dépendant existe, il a déjà reçu ses 3 paniers`;
+          ).innerHTML = `Ce dépendant n'existe pas.`;
+          document.getElementById("appears-crm").style.visibility = "hidden";
+        } else if (res.data.message === "success") {
+          document.getElementById("appears-crm").style.visibility = "visible";
+          document.getElementById(
+            "message-crm"
+          ).innerHTML = `Ce dépendant existe, il a déjà reçu ${res.data.numberOfBaskets} paniers.`;
         } else
           document.getElementById(
             "message-crm"
-          ).innerHTML = `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
+          ).innerHTML = `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
       })
       .catch((error) => {
         console.error(error);
@@ -125,15 +108,61 @@ export const CRMPage = () => {
               ref={register}
             ></input>
           </div>
-          <div className="input-wrapper-crm">
-            <input
-              className="submit-crm"
-              value="Ajouter un panier"
-              type="submit"
-            ></input>
+          <p id="message-crm"></p>
+          <div id="appears-crm">
+            <div className="input-wrapper-crm">
+              <label>
+                'Nombre d'argent donné (négatif = le centre donne de l'argent
+                audépendant): '
+              </label>
+              <br></br>
+              <input
+                name="balance"
+                className="input-crm"
+                type="number"
+                required
+                ref={register}
+              ></input>
+            </div>
+            <div className="input-wrapper-crm">
+              <br></br>
+              <input
+                name="livraison"
+                className="checkbox-crm"
+                type="checkbox"
+                ref={register}
+              ></input>
+              <label> Livraison</label>
+            </div>
+            <div className="input-wrapper-crm">
+              <br></br>
+              <input
+                name="depannage"
+                className="checkbox-crm"
+                type="checkbox"
+                ref={register}
+              ></input>
+              <label> Dépannage d'urgence</label>
+            </div>
+            <div className="input-wrapper-crm">
+              <br></br>
+              <input
+                name="christmasBasket"
+                className="checkbox-crm"
+                type="checkbox"
+                ref={register}
+              ></input>
+              <label> Panier de Noël</label>
+            </div>
+            <div className="input-wrapper-crm">
+              <input
+                className="submit-crm"
+                value="Ajouter un panier"
+                type="submit"
+              ></input>
+            </div>
           </div>
         </form>
-        <p id="message-crm"></p>
       </div>
     </div>
   );
