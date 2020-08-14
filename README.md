@@ -73,18 +73,95 @@ Now, let's configure our mysql database. Type:
             PRIMARY KEY (`id`));
 
         CREATE TABLE `meettheneed`.`dependants` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `firstName` VARCHAR(45) NOT NULL,
-        `lastName` VARCHAR(45) NOT NULL,
-        `dateOfBirth` VARCHAR(15) NOT NULL,
-        `email` VARCHAR(45) NULL,
-        `homeAddress` VARCHAR(45) NULL,
-        `currentWeek` INT NOT NULL,
-        `numberOfBaskets` INT NOT NULL,
-        `registrationDate` DATETIME NOT NULL,
-        PRIMARY KEY (`id`));
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `firstName` VARCHAR(45) NOT NULL,
+            `lastName` VARCHAR(45) NOT NULL,
+            `dateOfBirth` VARCHAR(45) NOT NULL,
+            `sex` VARCHAR(15) NOT NULL,
+            `studentStatus` VARCHAR(45) NOT NULL,
+            `memberStatus` VARCHAR(45) NOT NULL,
+            `volunteerStatus` VARCHAR(45) NOT NULL,
+            `email` VARCHAR(45) NULL DEFAULT NULL,
+            `homePhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+            `cellphoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+            `homeNumber` INT NOT NULL,
+            `homeStreet` VARCHAR(45) NOT NULL,
+            `appartmentNumber` VARCHAR(45) NULL DEFAULT NULL,
+            `appartmentLevel` VARCHAR(45) NULL DEFAULT NULL,
+            `homeEntryCode` VARCHAR(45) NULL DEFAULT NULL,
+            `homePostalCode` VARCHAR(20) NOT NULL,
+            `residencyProofStatus` VARCHAR(45) NOT NULL,
+            `typeOfHouse` VARCHAR(100) NOT NULL,
+            `sourceOfRevenue` VARCHAR(100) NOT NULL,
+            `familyComposition` VARCHAR(100) NOT NULL,
+            `numberOfOtherFamilyMembers` VARCHAR(45) NOT NULL,
+            `DOBfamilyMember1` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember2` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember3` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember4` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember5` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember6` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember7` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember8` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember9` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember10` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember11` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember12` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember13` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember14` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember15` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember16` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember17` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember18` VARCHAR(20) NULL DEFAULT NULL,
+            `DOBfamilyMember19` VARCHAR(20) NULL DEFAULT NULL,
+            `sourceOrganismName` VARCHAR(100) NULL DEFAULT NULL,
+            `socialWorkerNameOrganism` VARCHAR(100) NULL DEFAULT NULL,
+            `socialWorkerPhoneNumberOrganism` VARCHAR(45) NULL DEFAULT NULL,
+            `socialWorkerPostOrganism` INT NULL DEFAULT NULL,
+            `curatelName` VARCHAR(100) NULL DEFAULT NULL,
+            `socialWorkerNameCuratel` VARCHAR(100) NULL DEFAULT NULL,
+            `socialWorkerPhoneNumberCuratel` VARCHAR(45) NULL DEFAULT NULL,
+            `socialWorkerPostCuratel` INT NULL DEFAULT NULL,
+            `registrationDate` DATETIME NOT NULL,
+            `lastRenewment` DATETIME NOT NULL,
+            `expirationDate` DATETIME NOT NULL,
+            `balance` DECIMAL(10,0) NOT NULL),
+            PRIMARY KEY (`id`));
+
+        CREATE TABLE `meettheneed`.`transactions` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `date` DATE NOT NULL,
+            `time` TIME NULL DEFAULT NULL,
+            `currentWeek` INT NOT NULL,
+            `currentYear` INT NOT NULL,
+            `dependant` VARCHAR(100) NULL DEFAULT NULL,
+            `admin` VARCHAR(100) NULL DEFAULT NULL,
+            `amount_to_admin` DECIMAL(10,0) NOT NULL,
+            `transactionType` VARCHAR(45) NOT NULL,
+            `livraison` VARCHAR(45) NULL DEFAULT NULL,
+            `depannage` VARCHAR(45) NULL DEFAULT NULL,
+            `christmasBasket` VARCHAR(45) NULL DEFAULT NULL,
+            `address` VARCHAR(500) NULL DEFAULT NULL,
+            PRIMARY KEY (`id`));
+
+        CREATE TABLE `meettheneed`.`variables` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `priceBasket` DECIMAL(65,0) NOT NULL,
+            `priceBasketDepannage` DECIMAL(65,0) NOT NULL,
+            `priceBasketLivraison` DECIMAL(65,0) NOT NULL,
+            `priceBasketChristmas` DECIMAL(65,0) NOT NULL,
+            `priceBasketDepannageLivraison` DECIMAL(65,0) NOT NULL,
+            `priceBasketDepannageChristmas` DECIMAL(65,0) NOT NULL,
+            `priceBasketLivraisonChristmas` DECIMAL(65,0) NOT NULL,
+            `priceBasketDepannageLivraisonChristmas` DECIMAL(65,0) NOT NULL,
+            `priceMembership` DECIMAL(65,0) NOT NULL,
+            PRIMARY KEY (`id`));
+
+        //Create a hashed password from the initial_setup_password.js file. Enter your password on line 9.
 
         INSERT INTO admins(username, password) VALUES('admin', 'your hashed password produced by initial_setup_password.js here');
+
+        INSERT INTO variables(priceBasket, priceBasket, priceBasketDepannage, priceBasketLivraison, priceBasketChristmas, priceBasketDepannageLivraison, priceBasketDepannageChristmas, priceBasketLivraisonChristmas, priceBasketDepannageLivraisonChristmas, priceMembership) values(0,0,0,0,0,0,0,0,0);
 
         exit;
 
@@ -92,7 +169,17 @@ Now, let's configure our mysql database. Type:
 
     nano server.js
 
-        //Here, change the password attribute on line 22 to your admin msql user password (from line 53 of this file)
+        //Here, change the password attribute on line 22 to your admin msql user password (from line 162 of this file)
+
+        //Type Ctrl + O
+
+        //Type Ctrl + X
+
+    sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+        //add this line to the end of the file:
+
+        secure_file_priv=""
 
         //Type Ctrl + O
 
@@ -102,7 +189,9 @@ Now, lets test what we have done:
 
     sudo npm run start
 
-    // everything should work fine here
+    // everything should work fine here, but you wont be able to open the web-page
+
+If yo are on a computer, you can also test the app on localhost:8000 if you change the proxy to http://localhost:8000 in the root package.json file (not the one inside the react project).
 
 You can put the server.js file as a service if you want it to work in the background. To do this, type:
 
@@ -138,5 +227,33 @@ You can put the server.js file as a service if you want it to work in the backgr
     sudo systemctl restart administration_system
 
     sudo systemctl status administration_system         //if everything is green, then everything should be working
+
+Now, let's setup nginx
+
+    sudo apt-get remove apache2
+
+    sudo apt-get install nginx
+
+    sudo systemctl start nginx
+
+    cd /etc/nginx/sites-available/
+
+    sudo nano example.com.conf
+
+        //type:
+
+        server {
+            listen 80;
+            server_name http://raspberrypi.local;
+            location / {
+            proxy_pass http://localhost:8000;
+            }
+        }
+
+        //then, type Ctrl + O and Ctrl + X and continue...
+
+    ln -s /etc/nginx/sites-available/example.com.conf /etc/nginx/sites-enabled/example.com.conf
+
+    sudo systemctl reload nginx
 
 And there you go! everything should be working fine. You can access this website by typing raspberrypi.local in a browser in the same network.
