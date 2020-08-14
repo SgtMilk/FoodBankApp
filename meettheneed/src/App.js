@@ -29,6 +29,7 @@ import { ChangePrices } from "./screens/ChangePrices";
 import { YearlyReport } from "./screens/YearlyReport";
 import { WeeklyReport } from "./screens/WeeklyReport";
 import { DailyReport } from "./screens/DailyReport";
+import { RemoveTransaction } from "./screens/RemoveTransaction";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
         <Route path="/yearlyreport" exact component={YearlyReport} />
         <Route path="/weeklyreport" exact component={WeeklyReport} />
         <Route path="/dailyreport" exact component={DailyReport} />
+        <Route path="/transactions" exact component={RemoveTransaction} />
         <Route component={NotFoundPage} />
       </Switch>
     </BrowserRouter>

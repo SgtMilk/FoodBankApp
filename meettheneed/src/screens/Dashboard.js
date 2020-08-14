@@ -76,6 +76,21 @@ export const Dashboard = () => {
       });
   };
 
+  const goAllTransactions = () => {
+    axios
+      .post("/api/alltransactions", {
+        curuser: redux.store.getState().username,
+      })
+      .then(function (res) {
+        console.log(res);
+        redux.store.dispatch(redux.setDependants(res.data));
+        history.push("/transactions");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="dashboard">
       <script> {authCheck()}</script>
@@ -99,6 +114,9 @@ export const Dashboard = () => {
       </button>
       <button className="button-dashboard" onClick={goChangePrices}>
         Changer les prix
+      </button>
+      <button className="button-dashboard" onClick={goAllTransactions}>
+        Retirer une transaction
       </button>
     </div>
   );
