@@ -32,22 +32,24 @@ export const AddDependant = () => {
     axios
       .post("/api/adddependant", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data.message === "already in database") {
           document.getElementById(
             "message-addDependant"
           ).innerHTML = `Il existe déjà un dépendant avec ce nom et date de naissance`;
         } else if (res.data.message === "success") {
           alert("Dépendant ajouté avec succès!");
-          console.log("success");
           showQR(res.data.id, res.data.email);
           document.getElementById("form-adddependant").reset();
           document.getElementById("message-addDependant").innerHTML = ``;
-        } else {
-          document.getElementById(
-            "message-addDependant"
-          ).innerHTML = `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
-        }
+        } else
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -69,6 +71,7 @@ export const AddDependant = () => {
   return (
     <div className="addDependant">
       <script> {authCheck()}</script>
+      <p id="title">Ajouter un dépendant</p>
       <BackButton to="/dependants" />
       <div className="form-addDependant">
         <form onSubmit={handleSubmit(onSubmit)} id="form-adddependant">

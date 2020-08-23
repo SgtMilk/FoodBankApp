@@ -18,16 +18,21 @@ export const CRMPage = () => {
     axios
       .post("/api/addbasket", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data.message === "success") {
           redux.store.dispatch(redux.setDependants([]));
-          alert("Panier ajouté avec succès");
+          alert("Panier ajouté avec succès!");
           document.getElementById("form-crm").reset();
           document.getElementById("message-crm").innerHTML = ``;
           document.getElementById("appears-crm").style.visibility = "hidden";
+          window.scrollTo(0, 0);
         } else
           alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
           );
       })
       .catch((error) => {
@@ -39,7 +44,11 @@ export const CRMPage = () => {
     axios
       .post("/api/crm", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data.message === "not there") {
           document.getElementById(
             "message-crm"
@@ -51,9 +60,9 @@ export const CRMPage = () => {
             "message-crm"
           ).innerHTML = `Ce dépendant existe, il a déjà reçu ${res.data.numberOfBaskets} paniers.`;
         } else
-          document.getElementById(
-            "message-crm"
-          ).innerHTML = `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -62,6 +71,7 @@ export const CRMPage = () => {
 
   return (
     <div className="crm">
+      <p id="title">Ajouter un panier à un dépendant</p>
       <BackButton to="/" />
       <div className="form-crm">
         <form
@@ -80,6 +90,7 @@ export const CRMPage = () => {
               maxLength="45"
               minLength="1"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-crm">
@@ -93,6 +104,7 @@ export const CRMPage = () => {
               maxLength="45"
               minLength="1"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-crm">
@@ -106,6 +118,7 @@ export const CRMPage = () => {
               maxLength="15"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <p id="message-crm"></p>
@@ -122,6 +135,8 @@ export const CRMPage = () => {
                 type="number"
                 required
                 ref={register}
+                autoComplete="new-password"
+                step="0.01"
               ></input>
             </div>
             <div className="input-wrapper-crm">

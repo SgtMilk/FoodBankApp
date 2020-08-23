@@ -43,17 +43,22 @@ export const AddAdministrator = () => {
     axios
       .post("/api/addadministrator", newvalues)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data === "username taken")
           document.getElementById(
             "message-addAdministrator"
           ).innerHTML = `Il existe déjà un administrateur avec ce nom`;
         else if (res.data === "success") {
+          alert("Administrateur ajouté avec succès!");
           history.push("/dashboard");
         } else
-          document.getElementById(
-            "message-addAdministrator"
-          ).innerHTML = `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -63,6 +68,7 @@ export const AddAdministrator = () => {
   return (
     <div className="addAdministrator">
       <script> {authCheck()}</script>
+      <p id="title">Ajouter un administrateur</p>
       <BackButton to="/administrateurs" />
       <div className="form-addAdministrator">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -77,6 +83,7 @@ export const AddAdministrator = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addAdministrator">
@@ -90,6 +97,7 @@ export const AddAdministrator = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addAdministrator">
@@ -103,6 +111,7 @@ export const AddAdministrator = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addAdministrator">

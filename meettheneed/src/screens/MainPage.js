@@ -16,6 +16,7 @@ export const MainPage = () => {
 
   return (
     <div className="row">
+      <p id="title">Page principale</p>
       <button className="button-mainpage" onClick={goAdmin}>
         Administrateur
       </button>

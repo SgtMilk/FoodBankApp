@@ -18,7 +18,9 @@ export const Dependant = (name) => {
   const dateOfBirth = redux.store.getState().dependants[name.props].dateOfBirth;
 
   const deleteDependant = () => {
-    alert("Êtes-vous sûr que vous voulez supprimer ce dépendant?");
+    alert(
+      "Êtes-vous sûr que vous voulez supprimer ce dépendant? (Fermer la page si non)"
+    );
     axios
       .post("/api/removedependant", {
         firstName: firstName,
@@ -27,19 +29,28 @@ export const Dependant = (name) => {
         curuser: redux.store.getState().username,
       })
       .then((res) => {
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data !== "success") {
           alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
           );
           return;
         }
-        console.log("succeded");
+        alert("Dépendant retiré du système avec succès!");
         axios
           .post("/api/alldependants", {
             curuser: redux.store.getState().username,
           })
           .then((res) => {
-            console.log(`statusCode: ${res.statusCode}`);
+            console.log(`statusCode: ${res.status}`);
+            if (res.status !== 200)
+              alert(
+                `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+              );
             redux.store.dispatch(redux.setDependants(res.data));
             history.push("/removedependant");
           })

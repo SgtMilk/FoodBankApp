@@ -17,27 +17,47 @@ export const Transaction = (name) => {
   const dependant = redux.store.getState().dependants[name.props].dependant;
 
   const deleteTransaction = () => {
-    alert("Êtes-vous sûr que vous voulez supprimer ce dépendant?");
+    alert(
+      "Êtes-vous sûr que vous voulez supprimer cette transaction? (Fermer la page si non)"
+    );
     axios
       .post("/api/removetransaction", {
         id: id,
+        balance: redux.store.getState().dependants[name.props].amount_to_admin,
+        dependant: dependant,
+        livraison: redux.store.getState().dependants[name.props].livraison,
+        christmasBasket: redux.store.getState().dependants[name.props]
+          .christmasBasket,
+        depannage: redux.store.getState().dependants[name.props].depannage,
         curuser: redux.store.getState().username,
       })
       .then((res) => {
-        console.log(res.data);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data !== "success") {
           alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
           );
           return;
         }
-        console.log("succeded");
+        alert(
+          `Transaction retirée du système avec succès! Veuillez remettre ${
+            redux.store.getState().dependants[name.props].amount_to_admin
+          }$ au client.`
+        );
         axios
           .post("/api/alltransactions", {
             curuser: redux.store.getState().username,
           })
           .then((res) => {
-            console.log(`statusCode: ${res.statusCode}`);
+            console.log(`statusCode: ${res.status}`);
+            if (res.status !== 200)
+              alert(
+                `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+              );
             redux.store.dispatch(redux.setDependants(res.data));
             history.push("/transactions");
           })

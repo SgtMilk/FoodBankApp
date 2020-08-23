@@ -33,7 +33,11 @@ export const Dependants = () => {
         curuser: redux.store.getState().username,
       })
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         redux.store.dispatch(redux.setDependants(res.data));
         history.push("/removedependant");
       })
@@ -46,6 +50,7 @@ export const Dependants = () => {
   return (
     <div className="dependants">
       <script> {authCheck()}</script>
+      <p id="title">Gérer les dépendants</p>
       <BackButton to="/dashboard" />
       <button className="button-dependants" onClick={goAddDependant}>
         Ajouter un dépendant

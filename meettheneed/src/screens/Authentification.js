@@ -21,16 +21,22 @@ export const Authentification = () => {
     axios
       .post("/api/login", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         redux.store.dispatch(redux.setUser(res.data.username));
         if (res.data.message === "authentification failed") {
           document.getElementById(
             "message-authentification"
           ).innerHTML = `Mauvais nom d'utilisateur ou mot de passe`;
         } else if (res.data.message === "authentification succeded") {
-          console.log("succeded");
           history.push("/dashboard");
-        }
+        } else
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -39,6 +45,7 @@ export const Authentification = () => {
 
   return (
     <div className="Authentification">
+      <p id="title">Page administrative</p>
       <BackButton to="/" />
       <div className="form-authentification">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -53,6 +60,7 @@ export const Authentification = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-authentification">
@@ -66,6 +74,7 @@ export const Authentification = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-authentification">

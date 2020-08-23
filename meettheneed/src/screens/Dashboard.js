@@ -38,17 +38,17 @@ export const Dashboard = () => {
     history.push("/administrateurs");
   };
 
-  const goAddDependant = () => {
-    history.push("/adddependant");
-  };
-
   const goLivraisons = () => {
     axios
       .post("/api/alllivraisons", {
         curuser: redux.store.getState().username,
       })
       .then(function (res) {
-        console.log(res);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         redux.store.dispatch(redux.setDependants(res.data));
         history.push("/livraisons");
       })
@@ -67,7 +67,11 @@ export const Dashboard = () => {
         curuser: redux.store.getState().username,
       })
       .then(function (res) {
-        console.log(res);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         redux.store.dispatch(redux.setDependants(res.data));
         history.push("/changeprices");
       })
@@ -82,7 +86,11 @@ export const Dashboard = () => {
         curuser: redux.store.getState().username,
       })
       .then(function (res) {
-        console.log(res);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         redux.store.dispatch(redux.setDependants(res.data));
         history.push("/transactions");
       })
@@ -94,6 +102,7 @@ export const Dashboard = () => {
   return (
     <div className="dashboard">
       <script> {authCheck()}</script>
+      <p id="title">Menu administratif</p>
       <button onClick={logout} className="button-dashboard">
         Se déconnecter
       </button>
@@ -102,9 +111,6 @@ export const Dashboard = () => {
       </button>
       <button className="button-dashboard" onClick={goDependants}>
         Gérer les dépendants
-      </button>
-      <button className="button-dashboard" onClick={goAddDependant}>
-        Ajouter un dépendant
       </button>
       <button className="button-dashboard" onClick={goLivraisons}>
         Livraisons

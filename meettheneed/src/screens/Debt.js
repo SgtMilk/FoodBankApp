@@ -34,16 +34,19 @@ export const Debt = () => {
     axios
       .post("/api/debt", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        if (res.data.message === "failure")
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
           alert(
-            "Une erreur s'est produite. Veuillez contacter un développeur de Meet the Need."
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
           );
-        else if (res.data.message === "success") {
-          alert("Le compte a été modifié avec succès");
+        if (res.data.message === "success") {
+          alert("La balance du compte a été modifié avec succès");
           redux.store.dispatch(redux.setDependants({}));
           history.push("/searchdependants");
-        }
+        } else
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -53,6 +56,7 @@ export const Debt = () => {
   return (
     <div className="renewCard">
       <script> {authCheck()}</script>
+      <p id="title">Ajouter/Retirer des fonds au dépendant</p>
       <BackButton to="/administrateurs" />
       <div className="form-renewCard">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,6 +72,8 @@ export const Debt = () => {
               type="number"
               required
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-renewCard">

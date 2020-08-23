@@ -33,7 +33,11 @@ export const SearchDependant = () => {
     axios
       .post("/api/searchdependant", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data.message === "not there") {
           document.getElementById(
             "message-searchDependant"
@@ -106,9 +110,9 @@ export const SearchDependant = () => {
           `;
           showQR(res.data.id, undefined);
         } else
-          document.getElementById(
-            "message-searchDependant"
-          ).innerHTML = `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`;
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -134,18 +138,26 @@ export const SearchDependant = () => {
     axios
       .post("/api/removedependantid", values)
       .then((res) => {
-        if (res.data !== "success") {
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
           alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
           );
-          return;
+        if (res.data === "success") {
+          alert("Dépendant retiré du système avec succès!");
+          document.getElementById("form-searchDependant").reset();
+          document.getElementById("message-searchDependant").innerHTML = ``;
+          document.getElementById("image-searchDependant").src = "";
+          history.push("/searchdependants");
+        } else {
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
+          document.getElementById("form-searchDependant").reset();
+          document.getElementById("message-searchDependant").innerHTML = ``;
+          document.getElementById("image-searchDependant").src = "";
+          history.push("/searchdependants");
         }
-        console.log("succeded");
-        alert("succès");
-        document.getElementById("form-searchDependant").reset();
-        document.getElementById("message-searchDependant").innerHTML = ``;
-        document.getElementById("image-searchDependant").src = "";
-        history.push("/searchdependants");
       })
       .catch((error) => {
         console.error(error);
@@ -186,6 +198,7 @@ export const SearchDependant = () => {
   return (
     <div className="searchDependant">
       <script> {authCheck()}</script>
+      <p id="title">Rechercher un dépendant</p>
       <BackButton to="/dependants" />
       <div className="form-searchDependant">
         <form onChange={handleSubmit(onChange)} id="form-searchDependant">
@@ -201,6 +214,7 @@ export const SearchDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-searchDependant">
@@ -215,6 +229,7 @@ export const SearchDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-searchDependant">
@@ -229,6 +244,7 @@ export const SearchDependant = () => {
               maxLength="15"
               minLength="4"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
         </form>

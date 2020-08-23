@@ -36,6 +36,7 @@ export const RemoveAdministrator = () => {
 
   return (
     <div className="removeAdministrator">
+      <p id="title">Retirer un administrateur</p>
       <script>{authCheck()}</script>
       <div className="back-button-div-removeAdministrator">
         <div className="back-button-link">

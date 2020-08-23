@@ -4,7 +4,13 @@
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .row {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,4 +34,14 @@
 .button-mainpage::-moz-focus-inner {
   border: none;
   outline: none;
+}
+
+#title {
+  font-size: 800%;
+  font-weight: 800;
+  position: absolute;
+  top: 0;
+  color: rgb(170, 190, 170);
+  z-index: -1;
+  text-align: center;
 }

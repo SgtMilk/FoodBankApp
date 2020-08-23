@@ -33,6 +33,11 @@ export const YearlyReport = () => {
     axios
       .post("/api/yearlyreport", values)
       .then(function (res) {
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data.message === "failure") {
           alert(
             `Veuillez contacter un développeur de Meet the Need. Une erreur s'est produite.`
@@ -49,6 +54,7 @@ export const YearlyReport = () => {
   return (
     <div className="report">
       <script> {authCheck()}</script>
+      <p id="title">Rapport annuel</p>
       <BackButton to="/rapports" />
       <div className="form-report">
         <form onSubmit={handleSubmit(onSubmit)}>

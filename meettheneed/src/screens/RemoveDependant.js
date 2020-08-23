@@ -37,6 +37,7 @@ export const RemoveDependant = () => {
   return (
     <div className="removeDependants">
       <script>{authCheck()}</script>
+      <p id="title">Retirer un dépendant</p>
       <div className="back-button-div-removeDependant">
         <div className="back-button-link">
           <button className="back-button" onClick={goBack}>

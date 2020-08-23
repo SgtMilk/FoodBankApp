@@ -37,6 +37,7 @@ export const Livraisons = () => {
   return (
     <div className="livraisons">
       <script>{authCheck()}</script>
+      <p id="title">Livraisons</p>
       <div className="back-button-div-livraisons">
         <div className="back-button-link">
           <button className="back-button" onClick={goBack}>

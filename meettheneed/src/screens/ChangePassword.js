@@ -44,14 +44,22 @@ export const ChangePassword = () => {
     axios
       .post("/api/changepassword", newvalues)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data === "old password incorrect")
           document.getElementById(
             "message-changePassword"
           ).innerHTML = `L'ancien mot de passe est erroné`;
         else if (res.data === "success") {
+          alert("Mot de passe changé avec succès!");
           history.push("/dashboard");
-        }
+        } else
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
       })
       .catch((error) => {
         console.error(error);
@@ -61,6 +69,7 @@ export const ChangePassword = () => {
   return (
     <div className="changePassword">
       <script> {authCheck()}</script>
+      <p id="title">Changer votre mot de passe</p>
       <BackButton to="/administrateurs" />
       <div className="form-changePassword">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,6 +84,7 @@ export const ChangePassword = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-changePassword">
@@ -88,6 +98,7 @@ export const ChangePassword = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-changePassword">
@@ -101,6 +112,7 @@ export const ChangePassword = () => {
               maxLength="45"
               minLength="4"
               ref={register}
+              autoComplete="new-password"
             ></input>
           </div>
           <div className="input-wrapper-changePassword">

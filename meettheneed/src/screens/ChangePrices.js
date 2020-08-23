@@ -35,11 +35,17 @@ export const ChangePrices = () => {
     axios
       .post("/api/changeprices", values)
       .then(function (res) {
-        console.log(res);
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data !== "success")
-          alert("Veuillez contacter un développeur de meet the need");
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
         else {
-          alert("Prix changés");
+          alert("Prix changés avec succès!");
           redux.store.dispatch(redux.setDependants({}));
           history.push("/dashboard");
         }
@@ -52,9 +58,14 @@ export const ChangePrices = () => {
   return (
     <div className="changePrices">
       <script> {authCheck()}</script>
+      <p id="title">Changer les prix</p>
       <BackButton to="/dashboard" />
       <div className="form-changePrices">
         <form onSubmit={handleSubmit(onSubmit)}>
+          <p>
+            Note: N'effectuez pas de retour de panier et un changement de prix
+            dans la même journée.
+          </p>
           <div className="input-wrapper-changePrices">
             <label>Prix d'un panier</label>
             <br></br>
@@ -65,6 +76,8 @@ export const ChangePrices = () => {
               required
               defaultValue={redux.store.getState().dependants.priceBasket}
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -79,6 +92,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketDepannage
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -93,6 +108,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketLivraison
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -107,6 +124,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketChristmas
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -121,6 +140,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketDepannageLivraison
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -135,6 +156,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketDepannageChristmas
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -149,6 +172,8 @@ export const ChangePrices = () => {
                 redux.store.getState().dependants.priceBasketLivraisonChristmas
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -164,6 +189,8 @@ export const ChangePrices = () => {
                   .priceBasketDepannageLivraisonChristmas
               }
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -176,6 +203,8 @@ export const ChangePrices = () => {
               required
               defaultValue={redux.store.getState().dependants.priceMembership}
               ref={register}
+              autoComplete="new-password"
+              step="0.01"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">

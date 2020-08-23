@@ -36,13 +36,19 @@ export const ModifyDependant = () => {
     axios
       .post("/api/modifydependant", values)
       .then((res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        if (res.data.message === "failure") {
-          alert("Veuillez contacter un développeur de meet the need");
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
+        if (res.data.message === "success") {
+          alert("Le compte a été modifié avec succès");
           redux.store.dispatch(redux.setDependants({}));
           history.push("/searchdependants");
-        } else if (res.data.message === "success") {
-          alert("Le compte a été modifié avec succès");
+        } else {
+          alert(
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+          );
           redux.store.dispatch(redux.setDependants({}));
           history.push("/searchdependants");
         }
@@ -55,6 +61,7 @@ export const ModifyDependant = () => {
   return (
     <div className="modifyDependant">
       <script> {authCheck()}</script>
+      <p id="title">Modifier les informations d'un dépendant</p>
       <BackButton to="/searchdependants" />
       <div className="form-modifyDependant">
         <form onSubmit={handleSubmit(onSubmit)} id="form-modifyDependant">

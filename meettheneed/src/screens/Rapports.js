@@ -40,6 +40,7 @@ export const Rapports = () => {
   return (
     <div className="rapports">
       <script> {authCheck()}</script>
+      <p id="title">Page des rapports</p>
       <BackButton to="/dashboard" />
       <button className="button-rapports" onClick={gotoYearly}>
         Par an

@@ -37,12 +37,17 @@ export const RemoveTransaction = () => {
   return (
     <div className="removeTransaction">
       <script>{authCheck()}</script>
+      <p id="title">Retirer une transaction</p>
       <div className="back-button-div-removeTransaction">
         <div className="back-button-link">
           <button className="back-button" onClick={goBack}>
             Retour
           </button>
         </div>
+        <p>
+          Note: N'effectuez pas de retour de panier et un changement de prix
+          dans la même journée.
+        </p>
         <ul className="list-removeTransaction">
           {allTransactions.map((transaction, index) => (
             <Transaction props={index} key={index} />

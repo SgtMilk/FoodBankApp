@@ -17,26 +17,37 @@ export const Livraison = (name) => {
   const address = redux.store.getState().dependants[name.props].address;
 
   const deleteDependant = () => {
-    alert("Êtes-vous sûr que cette livraison a été effectuée?");
+    alert(
+      "Êtes-vous sûr que cette livraison a été effectuée? (Fermer la page si non)"
+    );
     axios
       .post("/api/completelivraison", {
         curuser: redux.store.getState().username,
         id: redux.store.getState().dependants[name.props].id,
       })
       .then((res) => {
+        console.log(`statusCode: ${res.status}`);
+        if (res.status !== 200)
+          alert(
+            `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+          );
         if (res.data !== "success") {
           alert(
-            `Veuillez contacter un administrateur de Meet The Need s'il vous plait. Une erreur s'est produite.`
+            `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
           );
           return;
         }
-        console.log("succeded");
+        alert("Livraison retirée de la liste avec succès!");
         axios
           .post("/api/alllivraisons", {
             curuser: redux.store.getState().username,
           })
           .then((res) => {
-            console.log(`statusCode: ${res.statusCode}`);
+            console.log(`statusCode: ${res.status}`);
+            if (res.status !== 200)
+              alert(
+                `Une erreur de communication s'est effectuée. Ceci est probablement un problème de connection wifi. Si l'erreur persiste, veuillez contacter un développeur de Meet The Need s'il vous plait.`
+              );
             redux.store.dispatch(redux.setDependants(res.data));
             history.push("/livraisons");
           })
