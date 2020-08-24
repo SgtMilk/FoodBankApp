@@ -214,7 +214,7 @@ export const SearchDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-searchDependant">
@@ -229,7 +229,7 @@ export const SearchDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-searchDependant">
@@ -244,7 +244,7 @@ export const SearchDependant = () => {
               maxLength="15"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
         </form>

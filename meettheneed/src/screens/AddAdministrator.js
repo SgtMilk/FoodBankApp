@@ -95,7 +95,7 @@ export const AddAdministrator = () => {
               type="password"
               required
               maxLength="45"
-              minLength="4"
+              minLength="8"
               ref={register}
               autoComplete="off"
             ></input>
@@ -109,7 +109,7 @@ export const AddAdministrator = () => {
               type="password"
               required
               maxLength="45"
-              minLength="4"
+              minLength="8"
               ref={register}
               autoComplete="off"
             ></input>

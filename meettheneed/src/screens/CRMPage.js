@@ -147,6 +147,8 @@ export const CRMPage = () => {
                 className="input-crm"
                 type="number"
                 required
+                max="1000"
+                min="-1000"
                 ref={register}
                 autoComplete="new-password"
                 step="0.01"

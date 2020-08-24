@@ -216,6 +216,8 @@ export const ModifyDependant = () => {
               name="homeNumber"
               className="input-modifyDependant"
               type="number"
+              max="100000"
+              min="0"
               ref={register}
               autoComplete="new-password"
               required
@@ -777,6 +779,7 @@ export const ModifyDependant = () => {
               className="input-modifyDependant"
               type="tel"
               ref={register}
+              maxLength="45"
               autoComplete="new-password"
               defaultValue={
                 redux.store.getState().dependants
@@ -792,6 +795,8 @@ export const ModifyDependant = () => {
               className="input-modifyDependant"
               type="number"
               ref={register}
+              max="100000"
+              min="0"
               autoComplete="new-password"
               defaultValue={
                 redux.store.getState().dependants.socialWorkerPostOrganism
@@ -834,6 +839,7 @@ export const ModifyDependant = () => {
               className="input-modifyDependant"
               type="tel"
               ref={register}
+              maxLength="45"
               autoComplete="new-password"
               defaultValue={
                 redux.store.getState().dependants.socialWorkerPhoneNumberCuratel
@@ -848,6 +854,8 @@ export const ModifyDependant = () => {
               className="input-modifyDependant"
               type="number"
               ref={register}
+              max="100000"
+              min="0"
               autoComplete="new-password"
               defaultValue={
                 redux.store.getState().dependants.socialWorkerPostCuratel

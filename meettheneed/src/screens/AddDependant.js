@@ -105,7 +105,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -119,7 +119,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="1"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -133,7 +133,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -206,7 +206,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -219,7 +219,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -232,7 +232,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <br></br>
@@ -247,8 +247,10 @@ export const AddDependant = () => {
               name="homeNumber"
               className="input-addDependant"
               type="number"
+              max="100000"
+              min="0"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
               required
             ></input>
           </div>
@@ -262,7 +264,7 @@ export const AddDependant = () => {
               maxLength="45"
               minLength="2"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
               required
             ></input>
           </div>
@@ -275,7 +277,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="45"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -287,7 +289,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="45"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -299,7 +301,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="45"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -312,7 +314,7 @@ export const AddDependant = () => {
               maxLength="20"
               minLength="2"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
               required
             ></input>
           </div>
@@ -470,7 +472,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="2">
@@ -483,7 +485,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="3">
@@ -496,7 +498,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="4">
@@ -509,7 +511,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="5">
@@ -522,7 +524,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="6">
@@ -535,7 +537,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="7">
@@ -548,7 +550,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="8">
@@ -561,7 +563,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="9">
@@ -574,7 +576,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="10">
@@ -587,7 +589,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="11">
@@ -600,7 +602,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="12">
@@ -613,7 +615,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="13">
@@ -626,7 +628,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="14">
@@ -639,7 +641,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="15">
@@ -652,7 +654,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="16">
@@ -665,7 +667,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="17">
@@ -678,7 +680,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="18">
@@ -691,7 +693,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant" id="19">
@@ -704,7 +706,7 @@ export const AddDependant = () => {
               maxLength="10"
               minLength="4"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <br></br>
@@ -724,7 +726,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="100"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -736,7 +738,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="100"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -746,8 +748,9 @@ export const AddDependant = () => {
               name="socialWorkerPhoneNumberOrganism"
               className="input-addDependant"
               type="tel"
+              maxLength="45"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -757,8 +760,10 @@ export const AddDependant = () => {
               name="socialWorkerPostOrganism"
               className="input-addDependant"
               type="number"
+              max="100000"
+              min="0"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -770,7 +775,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="100"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -782,7 +787,7 @@ export const AddDependant = () => {
               type="text"
               maxLength="100"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -792,8 +797,9 @@ export const AddDependant = () => {
               name="socialWorkerPhoneNumberCuratel"
               className="input-addDependant"
               type="tel"
+              maxLength="45"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -803,8 +809,10 @@ export const AddDependant = () => {
               name="socialWorkerPostCuratel"
               className="input-addDependant"
               type="number"
+              max="100000"
+              min="0"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">
@@ -816,8 +824,10 @@ export const AddDependant = () => {
               type="number"
               step="0.01"
               required
+              max="1000"
+              min="-1000"
               ref={register}
-              autoComplete="new-password"
+              autoComplete="off"
             ></input>
           </div>
           <div className="input-wrapper-addDependant">

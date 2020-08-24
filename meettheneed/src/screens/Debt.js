@@ -74,6 +74,8 @@ export const Debt = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="1000"
+              min="-1000"
             ></input>
           </div>
           <div className="input-wrapper-renewCard">

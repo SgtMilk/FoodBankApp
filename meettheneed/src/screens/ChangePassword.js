@@ -52,7 +52,7 @@ export const ChangePassword = () => {
         if (res.data === "old password incorrect")
           document.getElementById(
             "message-changePassword"
-          ).innerHTML = `L'ancien mot de passe est erroné`;
+          ).innerHTML = `L'ancien mot de passe est erroné ou le nouveau mot de passe n'a pas changé.`;
         else if (res.data === "success") {
           alert("Mot de passe changé avec succès!");
           history.push("/dashboard");
@@ -82,7 +82,7 @@ export const ChangePassword = () => {
               type="password"
               required
               maxLength="45"
-              minLength="4"
+              minLength="1"
               ref={register}
               autoComplete="new-password"
             ></input>
@@ -96,7 +96,7 @@ export const ChangePassword = () => {
               type="password"
               required
               maxLength="45"
-              minLength="4"
+              minLength="8"
               ref={register}
               autoComplete="new-password"
             ></input>
@@ -110,7 +110,7 @@ export const ChangePassword = () => {
               type="password"
               required
               maxLength="45"
-              minLength="4"
+              minLength="8"
               ref={register}
               autoComplete="new-password"
             ></input>

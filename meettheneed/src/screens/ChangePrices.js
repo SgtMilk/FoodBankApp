@@ -77,6 +77,8 @@ export const ChangePrices = () => {
               defaultValue={redux.store.getState().dependants.priceBasket}
               ref={register}
               autoComplete="new-password"
+              max="100"
+              min="0"
               step="0.01"
             ></input>
           </div>
@@ -94,6 +96,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -110,6 +114,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -126,6 +132,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -142,6 +150,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -158,6 +168,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -174,6 +186,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -191,6 +205,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
@@ -205,6 +221,8 @@ export const ChangePrices = () => {
               ref={register}
               autoComplete="new-password"
               step="0.01"
+              max="100"
+              min="0"
             ></input>
           </div>
           <div className="input-wrapper-changePrices">
