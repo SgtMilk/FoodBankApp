@@ -17,6 +17,7 @@ export const MainPage = () => {
   return (
     <div className="row">
       <p id="title">Page principale</p>
+      <p id="copyright">Copyright © 2020 Alix Routhier-Lalonde</p>
       <button className="button-mainpage" onClick={goAdmin}>
         Administrateur
       </button>

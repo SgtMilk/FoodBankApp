@@ -257,3 +257,15 @@ Now, let's setup nginx
     sudo systemctl reload nginx
 
 And there you go! everything should be working fine. You can access this website by typing raspberrypi.local in a browser in the same network.
+
+I recommend running a backup of your mysql database at least every month or so. To do that, run:
+
+    mysqldump -u admin -p meettheneed > backup.sql
+
+...and then send you the file through scp.
+
+###Disclaimer
+
+This web-app is made to run under https. It has some security features, such as ignoring back-end XXS and SQL injection attacks, but it is still vulnerable to other attacks. All authors remove themselves from all liability towards any inconvinience the user may encounter during the use of this web-app.
+
+Copyright (C) 2020 Alix Routhier-Lalonde, Winkel Yin. This file is subject to the terms and conditions defined in file "LICENSE.txt", which is part of this source code package.

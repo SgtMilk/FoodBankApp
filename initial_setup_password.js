@@ -6,8 +6,18 @@
 
 const crypto = require("crypto");
 
-const password = ""; //YOUR PASSWORD HERE
+const password = escapeHTML(""); //YOUR PASSWORD HERE
 
 const hashed_password = crypto.createHmac("sha256", password).digest("hex");
 
 console.log(hashed_password);
+
+function escapeHTML(unsafe_str) {
+  return unsafe_str
+    .replace(/</g, "")
+    .replace(/>/g, "")
+    .replace(/`/g, "'")
+    .replace(/{/g, "")
+    .replace(/}/g, "")
+    .replace(/;/g, "");
+}
