@@ -945,7 +945,7 @@ app.post("/api/yearlyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentYear = ${year} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY """ LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentYear = ${year} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
     if (err) throw err;
     console.log(`yearly report query (${ip})`);
@@ -969,7 +969,7 @@ app.post("/api/weeklyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentWeek = ${week} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY """ LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentWeek = ${week} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
     if (err) throw err;
     console.log(`weekly report query (${ip})`);
@@ -991,7 +991,7 @@ app.post("/api/dailyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where date = "${day}" INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY """ LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where date = "${day}" INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
     if (err) throw err;
     res.sendFile("/var/lib/mysql/mysql/report.csv");
@@ -1099,45 +1099,21 @@ function escapeHTML(unsafe_str) {
 }
 
 const choose = (depannage, livraison, christmasBasket, variables) => {
-  if (livraison === false && depannage === false && christmasBasket === false)
+  if (livraison == false && depannage == false && christmasBasket == false)
     return variables.priceBasket;
-  else if (
-    livraison === true &&
-    depannage === false &&
-    christmasBasket === false
-  )
+  else if (livraison == true && depannage == false && christmasBasket == false)
     return variables.priceBasketLivraison;
-  else if (
-    livraison === false &&
-    depannage === true &&
-    christmasBasket === false
-  )
+  else if (livraison == false && depannage == true && christmasBasket == false)
     return variables.priceBasketDepannage;
-  else if (
-    livraison === false &&
-    depannage === false &&
-    christmasBasket === true
-  )
+  else if (livraison == false && depannage == false && christmasBasket == true)
     return variables.priceBasketChristmas;
-  else if (
-    livraison === true &&
-    depannage === true &&
-    christmasBasket === false
-  )
+  else if (livraison == true && depannage == true && christmasBasket == false)
     return variables.priceBasketDepannageLivraison;
-  else if (
-    livraison === false &&
-    depannage === true &&
-    christmasBasket === true
-  )
+  else if (livraison == false && depannage == true && christmasBasket == true)
     return variables.priceBasketDepannageChristmas;
-  else if (
-    livraison === true &&
-    depannage === false &&
-    christmasBasket === true
-  )
+  else if (livraison == true && depannage == false && christmasBasket == true)
     return variables.priceBasketLivraisonChristmas;
-  else if (livraison === true && depannage === true && christmasBasket === true)
+  else if (livraison == true && depannage == true && christmasBasket == true)
     return variables.priceBasketDepannageLivraisonChristmas;
 };
 

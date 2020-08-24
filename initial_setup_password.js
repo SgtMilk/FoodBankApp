@@ -6,7 +6,7 @@
 
 const crypto = require("crypto");
 
-const password = escapeHTML(""); //YOUR PASSWORD HERE
+const password = escapeHTML(""); //YOUR PASSWORD HERE (MUST BE AT LEAST 8 CHARACTERS LONG)
 
 const hashed_password = crypto.createHmac("sha256", password).digest("hex");
 
