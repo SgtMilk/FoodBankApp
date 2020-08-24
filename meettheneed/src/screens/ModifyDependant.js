@@ -58,13 +58,31 @@ export const ModifyDependant = () => {
       });
   };
 
+  const onChange = (values) => {
+    for (let i = 0; i < 19; i++) {
+      document.getElementById(`${i + 1}`).style.display = "block";
+      document.getElementById(`${i + 1}`).style.height = "inherit";
+    }
+    for (let i = 0; i < 19; i++) {
+      if (values.numberOfOtherFamilyMembers < i + 1) {
+        document.getElementById(`${i + 1}`).style.display = "none";
+        document.getElementById(`${i + 1}`).style.height = 0;
+        document.getElementById(`${i + 1}`).style.value = "";
+      }
+    }
+  };
+
   return (
     <div className="modifyDependant">
       <script> {authCheck()}</script>
       <p id="title">Modifier les informations d'un dépendant</p>
       <BackButton to="/searchdependants" />
       <div className="form-modifyDependant">
-        <form onSubmit={handleSubmit(onSubmit)} id="form-modifyDependant">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={handleSubmit(onChange)}
+          id="form-modifyDependant"
+        >
           <div className="input-wrapper-modifyDependant">
             <label>Sexe (requis): </label>
             <br></br>
@@ -447,11 +465,10 @@ export const ModifyDependant = () => {
               <option value="19">19</option>
             </select>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant1">
+          <div className="input-wrapper-modifyDependant" id="1">
             <label>Date de naissance du membre de la famille 1:</label>
             <br></br>
             <input
-              id="1"
               name="DOBfamilyMember1"
               className="input-modifyDependant"
               type="date"
@@ -462,11 +479,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember1}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant2">
+          <div className="input-wrapper-modifyDependant" id="2">
             <label>Date de naissance du membre de la famille 2:</label>
             <br></br>
             <input
-              id="2"
               name="DOBfamilyMember2"
               className="input-modifyDependant"
               type="date"
@@ -477,11 +493,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember2}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant3">
+          <div className="input-wrapper-modifyDependant" id="3">
             <label>Date de naissance du membre de la famille 3:</label>
             <br></br>
             <input
-              id="3"
               name="DOBfamilyMember3"
               className="input-modifyDependant"
               type="date"
@@ -492,11 +507,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember3}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant4">
+          <div className="input-wrapper-modifyDependant" id="4">
             <label>Date de naissance du membre de la famille 4:</label>
             <br></br>
             <input
-              id="4"
               name="DOBfamilyMember4"
               className="input-modifyDependant"
               type="date"
@@ -507,11 +521,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember4}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant5">
+          <div className="input-wrapper-modifyDependant" id="5">
             <label>Date de naissance du membre de la famille 5:</label>
             <br></br>
             <input
-              id="5"
               name="DOBfamilyMember5"
               className="input-modifyDependant"
               type="date"
@@ -522,11 +535,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember5}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant6">
+          <div className="input-wrapper-modifyDependant" id="6">
             <label>Date de naissance du membre de la famille 6:</label>
             <br></br>
             <input
-              id="6"
               name="DOBfamilyMember6"
               className="input-modifyDependant"
               type="date"
@@ -537,11 +549,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember6}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant7">
+          <div className="input-wrapper-modifyDependant" id="7">
             <label>Date de naissance du membre de la famille 7:</label>
             <br></br>
             <input
-              id="7"
               name="DOBfamilyMember7"
               className="input-modifyDependant"
               type="date"
@@ -552,11 +563,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember7}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant8">
+          <div className="input-wrapper-modifyDependant" id="8">
             <label>Date de naissance du membre de la famille 8:</label>
             <br></br>
             <input
-              id="8"
               name="DOBfamilyMember8"
               className="input-modifyDependant"
               type="date"
@@ -567,11 +577,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember8}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant9">
+          <div className="input-wrapper-modifyDependant" id="9">
             <label>DDate de naissance du membre de la famille 9:</label>
             <br></br>
             <input
-              id="9"
               name="DOBfamilyMember9"
               className="input-modifyDependant"
               type="date"
@@ -582,11 +591,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember9}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant10">
+          <div className="input-wrapper-modifyDependant" id="10">
             <label>Date de naissance du membre de la famille 10:</label>
             <br></br>
             <input
-              id="10"
               name="DOBfamilyMember10"
               className="input-modifyDependant"
               type="date"
@@ -597,11 +605,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember10}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant11">
+          <div className="input-wrapper-modifyDependant" id="11">
             <label>Date de naissance du membre de la famille 11:</label>
             <br></br>
             <input
-              id="11"
               name="DOBfamilyMember11"
               className="input-modifyDependant"
               type="date"
@@ -612,11 +619,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember11}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant12">
+          <div className="input-wrapper-modifyDependant" id="12">
             <label>Date de naissance du membre de la famille 12:</label>
             <br></br>
             <input
-              id="12"
               name="DOBfamilyMember12"
               className="input-modifyDependant"
               type="date"
@@ -627,11 +633,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember12}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant13">
+          <div className="input-wrapper-modifyDependant" id="13">
             <label>Date de naissance du membre de la famille 13:</label>
             <br></br>
             <input
-              id="13"
               name="DOBfamilyMember13"
               className="input-modifyDependant"
               type="date"
@@ -642,11 +647,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember13}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant14">
+          <div className="input-wrapper-modifyDependant" id="14">
             <label>Date de naissance du membre de la famille 14:</label>
             <br></br>
             <input
-              id="14"
               name="DOBfamilyMember14"
               className="input-modifyDependant"
               type="date"
@@ -657,11 +661,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember14}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant15">
+          <div className="input-wrapper-modifyDependant" id="15">
             <label>Date de naissance du membre de la famille 15:</label>
             <br></br>
             <input
-              id="15"
               name="DOBfamilyMember15"
               className="input-modifyDependant"
               type="date"
@@ -672,11 +675,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember15}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant16">
+          <div className="input-wrapper-modifyDependant" id="16">
             <label>Date de naissance du membre de la famille 16:</label>
             <br></br>
             <input
-              id="16"
               name="DOBfamilyMember16"
               className="input-modifyDependant"
               type="date"
@@ -687,11 +689,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember16}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant17">
+          <div className="input-wrapper-modifyDependant" id="17">
             <label>Date de naissance du membre de la famille 17:</label>
             <br></br>
             <input
-              id="17"
               name="DOBfamilyMember17"
               className="input-modifyDependant"
               type="date"
@@ -702,11 +703,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember17}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant18">
+          <div className="input-wrapper-modifyDependant" id="18">
             <label>Date de naissance du membre de la famille 18:</label>
             <br></br>
             <input
-              id="18"
               name="DOBfamilyMember18"
               className="input-modifyDependant"
               type="date"
@@ -717,11 +717,10 @@ export const ModifyDependant = () => {
               defaultValue={redux.store.getState().dependants.DOBfamilyMember18}
             ></input>
           </div>
-          <div className="input-wrapper-modifyDependant" id="DOBdependant19">
+          <div className="input-wrapper-modifyDependant" id="19">
             <label>Date de naissance du membre de la famille 19:</label>
             <br></br>
             <input
-              id="19"
               name="DOBfamilyMember19"
               className="input-modifyDependant"
               type="date"

@@ -56,6 +56,20 @@ export const AddDependant = () => {
       });
   };
 
+  const onChange = (values) => {
+    for (let i = 0; i < 19; i++) {
+      document.getElementById(`${i + 1}`).style.display = "block";
+      document.getElementById(`${i + 1}`).style.height = "inherit";
+    }
+    for (let i = 0; i < 19; i++) {
+      if (values.numberOfOtherFamilyMembers < i + 1) {
+        document.getElementById(`${i + 1}`).style.display = "none";
+        document.getElementById(`${i + 1}`).style.height = 0;
+        document.getElementById(`${i + 1}`).style.value = "";
+      }
+    }
+  };
+
   const showQR = (id, email) => {
     let image = document.getElementById("image-addDependant");
     let img = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`;
@@ -74,7 +88,12 @@ export const AddDependant = () => {
       <p id="title">Ajouter un dépendant</p>
       <BackButton to="/dependants" />
       <div className="form-addDependant">
-        <form onSubmit={handleSubmit(onSubmit)} id="form-adddependant">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={handleSubmit(onChange)}
+          onload={handleSubmit(onChange)}
+          id="form-adddependant"
+        >
           <div className="input-wrapper-addDependant">
             <label>Prénom (requis): </label>
             <br></br>
@@ -417,10 +436,9 @@ export const AddDependant = () => {
             </label>
             <br></br>
             <select name="numberOfOtherFamilyMembers" required ref={register}>
-              <option value="none" selected disabled hidden>
-                Choisir une option
+              <option value="0" selected>
+                0
               </option>
-              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -442,11 +460,10 @@ export const AddDependant = () => {
               <option value="19">19</option>
             </select>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant1">
+          <div className="input-wrapper-addDependant" id="1">
             <label>Date de naissance du membre de la famille 1:</label>
             <br></br>
             <input
-              id="1"
               name="DOBfamilyMember1"
               className="input-addDependant"
               type="date"
@@ -456,11 +473,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant2">
+          <div className="input-wrapper-addDependant" id="2">
             <label>Date de naissance du membre de la famille 2:</label>
             <br></br>
             <input
-              id="2"
               name="DOBfamilyMember2"
               className="input-addDependant"
               type="date"
@@ -470,11 +486,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant3">
+          <div className="input-wrapper-addDependant" id="3">
             <label>Date de naissance du membre de la famille 3:</label>
             <br></br>
             <input
-              id="3"
               name="DOBfamilyMember3"
               className="input-addDependant"
               type="date"
@@ -484,11 +499,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant4">
+          <div className="input-wrapper-addDependant" id="4">
             <label>Date de naissance du membre de la famille 4:</label>
             <br></br>
             <input
-              id="4"
               name="DOBfamilyMember4"
               className="input-addDependant"
               type="date"
@@ -498,11 +512,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant5">
+          <div className="input-wrapper-addDependant" id="5">
             <label>Date de naissance du membre de la famille 5:</label>
             <br></br>
             <input
-              id="5"
               name="DOBfamilyMember5"
               className="input-addDependant"
               type="date"
@@ -512,11 +525,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant6">
+          <div className="input-wrapper-addDependant" id="6">
             <label>Date de naissance du membre de la famille 6:</label>
             <br></br>
             <input
-              id="6"
               name="DOBfamilyMember6"
               className="input-addDependant"
               type="date"
@@ -526,11 +538,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant7">
+          <div className="input-wrapper-addDependant" id="7">
             <label>Date de naissance du membre de la famille 7:</label>
             <br></br>
             <input
-              id="7"
               name="DOBfamilyMember7"
               className="input-addDependant"
               type="date"
@@ -540,11 +551,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant8">
+          <div className="input-wrapper-addDependant" id="8">
             <label>Date de naissance du membre de la famille 8:</label>
             <br></br>
             <input
-              id="8"
               name="DOBfamilyMember8"
               className="input-addDependant"
               type="date"
@@ -554,11 +564,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant9">
+          <div className="input-wrapper-addDependant" id="9">
             <label>DDate de naissance du membre de la famille 9:</label>
             <br></br>
             <input
-              id="9"
               name="DOBfamilyMember9"
               className="input-addDependant"
               type="date"
@@ -568,11 +577,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant10">
+          <div className="input-wrapper-addDependant" id="10">
             <label>Date de naissance du membre de la famille 10:</label>
             <br></br>
             <input
-              id="10"
               name="DOBfamilyMember10"
               className="input-addDependant"
               type="date"
@@ -582,11 +590,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant11">
+          <div className="input-wrapper-addDependant" id="11">
             <label>Date de naissance du membre de la famille 11:</label>
             <br></br>
             <input
-              id="11"
               name="DOBfamilyMember11"
               className="input-addDependant"
               type="date"
@@ -596,11 +603,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant12">
+          <div className="input-wrapper-addDependant" id="12">
             <label>Date de naissance du membre de la famille 12:</label>
             <br></br>
             <input
-              id="12"
               name="DOBfamilyMember12"
               className="input-addDependant"
               type="date"
@@ -610,11 +616,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant13">
+          <div className="input-wrapper-addDependant" id="13">
             <label>Date de naissance du membre de la famille 13:</label>
             <br></br>
             <input
-              id="13"
               name="DOBfamilyMember13"
               className="input-addDependant"
               type="date"
@@ -624,11 +629,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant14">
+          <div className="input-wrapper-addDependant" id="14">
             <label>Date de naissance du membre de la famille 14:</label>
             <br></br>
             <input
-              id="14"
               name="DOBfamilyMember14"
               className="input-addDependant"
               type="date"
@@ -638,11 +642,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant15">
+          <div className="input-wrapper-addDependant" id="15">
             <label>Date de naissance du membre de la famille 15:</label>
             <br></br>
             <input
-              id="15"
               name="DOBfamilyMember15"
               className="input-addDependant"
               type="date"
@@ -652,11 +655,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant16">
+          <div className="input-wrapper-addDependant" id="16">
             <label>Date de naissance du membre de la famille 16:</label>
             <br></br>
             <input
-              id="16"
               name="DOBfamilyMember16"
               className="input-addDependant"
               type="date"
@@ -666,11 +668,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant17">
+          <div className="input-wrapper-addDependant" id="17">
             <label>Date de naissance du membre de la famille 17:</label>
             <br></br>
             <input
-              id="17"
               name="DOBfamilyMember17"
               className="input-addDependant"
               type="date"
@@ -680,11 +681,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant18">
+          <div className="input-wrapper-addDependant" id="18">
             <label>Date de naissance du membre de la famille 18:</label>
             <br></br>
             <input
-              id="18"
               name="DOBfamilyMember18"
               className="input-addDependant"
               type="date"
@@ -694,11 +694,10 @@ export const AddDependant = () => {
               autoComplete="new-password"
             ></input>
           </div>
-          <div className="input-wrapper-addDependant" id="DOBdependant19">
+          <div className="input-wrapper-addDependant" id="19">
             <label>Date de naissance du membre de la famille 19:</label>
             <br></br>
             <input
-              id="19"
               name="DOBfamilyMember19"
               className="input-addDependant"
               type="date"

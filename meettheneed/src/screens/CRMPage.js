@@ -59,6 +59,19 @@ export const CRMPage = () => {
           document.getElementById(
             "message-crm"
           ).innerHTML = `Ce dépendant existe, il a déjà reçu ${res.data.numberOfBaskets} paniers.`;
+          document.getElementById("residencyProofStatus").selected =
+            res.data.residencyProofStatus;
+          document.getElementById("studentStatus").selected =
+            res.data.studentStatus;
+          if (res.data.residencyProofStatus === "Non") {
+            document.getElementById("residencyProofStatus").style.display =
+              "inherit";
+          } else
+            document.getElementById("residencyProofStatus").style.display =
+              "none";
+          if (res.data.studentStatus === "Oui, mais n'a pas sa preuve d'études")
+            document.getElementById("studentStatus").style.display = "inherit";
+          else document.getElementById("studentStatus").style.display = "none";
         } else
           alert(
             `Veuillez contacter un développeur de Meet The Need s'il vous plait. Une erreur s'est produite.`
@@ -125,8 +138,8 @@ export const CRMPage = () => {
           <div id="appears-crm">
             <div className="input-wrapper-crm">
               <label>
-                'Nombre d'argent donné (négatif = le centre donne de l'argent
-                audépendant): '
+                'Nombre d'argent donné (négatif = le centre donne de l'argent au
+                dépendant): '
               </label>
               <br></br>
               <input
@@ -168,6 +181,37 @@ export const CRMPage = () => {
                 ref={register}
               ></input>
               <label> Panier de Noël</label>
+            </div>
+            <div className="input-wrapper-crm" id="residencyProofStatus">
+              <label>Preuve de résidence montrée (requis): </label>
+              <br></br>
+              <select
+                name="residencyProofStatus"
+                required
+                ref={register}
+                id="residencyProofStatus"
+              >
+                <option value="Oui">Oui</option>
+                <option value="Non" selected>
+                  Non
+                </option>
+              </select>
+            </div>
+            <div className="input-wrapper-crm" id="studentStatus">
+              <label>Statut d'étudiant (requis): </label>
+              <br></br>
+              <select
+                name="studentStatus"
+                required
+                ref={register}
+                id="studentStatus"
+              >
+                <option value="Oui">Oui</option>
+                <option value="Oui, mais n'a pas sa preuve d'études" selected>
+                  Oui, mais n'a pas sa preuve d'études
+                </option>
+                <option value="Non">Non</option>
+              </select>
             </div>
             <div className="input-wrapper-crm">
               <input
