@@ -90,7 +90,10 @@ app.post("/api/login", (req, res) => {
   //mysql
   let sqlcheck = `select distinct username from admins where username = "${username}" and password = "${hashed_password}";`;
   connection.query(sqlcheck, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] != null) {
       res.send({
         message: "authentification succeded",
@@ -144,7 +147,10 @@ app.post("/api/changepassword", (req, res) => {
   //mysql
   let sqlchange = `UPDATE admins SET password = "${new_hashed_password}" WHERE username = "${username}" and password = "${old_hashed_password}";`;
   connection.query(sqlchange, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.changedRows === 0) {
       res.send("old password incorrect");
       console.log(`admin password change failed (${ip})`);
@@ -188,13 +194,19 @@ app.post("/api/addadministrator", (req, res) => {
   let sqlcheck = `select distinct username from admins where username = "${username}";`;
   let sqladd = `insert into admins(username, password) values("${username}", "${hashed_password}");`;
   connection.query(sqlcheck, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     0;
     if (result[0] != null) {
       res.send("username taken");
     } else {
       connection.query(sqladd, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         if (result.affectedRows <= 0) {
           res.send("authentification failed");
         } else {
@@ -202,7 +214,10 @@ app.post("/api/addadministrator", (req, res) => {
           console.log(`new admin: ${username} (${ip})`);
           let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${username}", "${curuser}", ${0}, "add admin", "", "", "");`;
           connection.query(sqlTransaction, (err, result) => {
-            if (err) throw err;
+            if (err) {
+              console.log(err);
+              res.sendStatus(500);
+            }
           });
         }
       });
@@ -229,7 +244,10 @@ app.post("/api/alladministrators", (req, res) => {
   //mysql
   let sql = `select username from admins;`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     console.log(`admins query (${ip})`);
     res.send(result);
   });
@@ -255,14 +273,20 @@ app.post("/api/removeadministrator", (req, res) => {
   //mysql
   let sql = `DELETE FROM admins WHERE username = "${username}";`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send("failure");
     else {
       res.send("success");
       console.log(`admin ${username} removed (${ip})`);
       let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${username}", "${curuser}", ${0}, "remove admin", "", "", "");`;
       connection.query(sqlTransaction, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
       });
     }
   });
@@ -355,11 +379,17 @@ app.post("/api/adddependant", (req, res) => {
   let sqlid = `select distinct id from dependants where firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
   sql3 = "select * from variables where id = 1;";
   connection.query(sql3, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null) throw console.error();
     let price = result[0].priceMembership;
     connection.query(sqlcheck, (err, result) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
       if (result[0] != null) {
         res.send({ message: "already in database" });
       } else {
@@ -367,12 +397,18 @@ app.post("/api/adddependant", (req, res) => {
           balance - price
         });`;
         connection.query(sqladd, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
           if (result.affectedRows === 0)
             res.send({ message: "problem with system" });
           else {
             connection.query(sqlid, (err, result) => {
-              if (err) throw err;
+              if (err) {
+                console.log(err);
+                res.sendStatus(500);
+              }
               if (result[0] == null)
                 res.send({ message: "problem with system" });
               else {
@@ -383,7 +419,10 @@ app.post("/api/adddependant", (req, res) => {
                 });
                 let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${balance}, "new dependant", "", "", "");`;
                 connection.query(sqlTransaction, (err, result) => {
-                  if (err) throw err;
+                  if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                  }
                 });
               }
             });
@@ -411,7 +450,10 @@ app.post("/api/alldependants", (req, res) => {
   //mysql
   sql = `select firstName, lastName, dateOfBirth from dependants order by lastName;`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     res.send(result);
   });
 });
@@ -443,14 +485,20 @@ app.post("/api/removedependant", (req, res) => {
   //mysql
   let sql = `DELETE FROM dependants WHERE firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send("failure");
     else {
       res.send("success");
 
       let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${0}, "remove dependant", "", "", "");`;
       connection.query(sqlTransaction, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
       });
     }
   });
@@ -476,20 +524,29 @@ app.post("/api/removedependantid", (req, res) => {
   //mysql
   let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = ${id};`;
   connection.query(sql1, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null) res.send("failure");
     let firstName = result[0].firstName;
     let lastName = result[0].lastName;
     let dateOfBirth = result[0].dateOfBirth;
     let sql = `DELETE FROM dependants WHERE id = ${id};`;
     connection.query(sql, (err, result) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
       if (result.affectedRows <= 0) res.send("failure");
       else {
         res.send("success");
         let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${0}, "remove dependant", "", "", "");`;
         connection.query(sqlTransaction, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
         });
       }
     });
@@ -506,7 +563,10 @@ app.post("/api/crm", (req, res) => {
   //mysql
   let sql1 = `select distinct id, residencyProofStatus, studentStatus from dependants where firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
   connection.query(sql1, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null)
       res.send({
         message: "not there",
@@ -516,7 +576,10 @@ app.post("/api/crm", (req, res) => {
       let studentStatus = result[0].studentStatus;
       let sql2 = `select id from transactions where currentWeek = week(now()) and currentYear = year(now()) and dependant = "${lastName}, ${firstName} (${dateOfBirth})" and transactionType = "add basket"`;
       connection.query(sql2, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         res.send({
           message: "success",
           numberOfBaskets: result.length,
@@ -536,7 +599,10 @@ app.post("/api/crmid", (req, res) => {
   //mysql
   let sql = `select distinct firstName, lastName, dateOfBirth, residencyProofStatus, studentStatus from dependants where id = ${id};`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null)
       res.send({
         message: "not there",
@@ -550,7 +616,10 @@ app.post("/api/crmid", (req, res) => {
       id = result[0].id;
       let sql2 = `select id from transactions where currentWeek = week(now()) and currentYear = year(now()) and dependant = "${lastName}, ${firstName} (${dateOfBirth})" and transactionType = "add basket"`;
       connection.query(sql2, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         res.send({
           message: "success",
           numberOfBaskets: result.length,
@@ -575,7 +644,10 @@ app.post("/api/searchdependant", (req, res) => {
   //mysql
   let sql = `select distinct id, sex, studentStatus, memberStatus, volunteerStatus, email, homePhoneNumber, cellphoneNumber, homeNumber, homeStreet, appartmentNumber, appartmentLevel, homeEntryCode, homePostalCode, residencyProofStatus, typeOfHouse, sourceOfRevenue, familyComposition, numberOfOtherFamilyMembers, DOBfamilyMember1, DOBfamilyMember2, DOBfamilyMember3, DOBfamilyMember4, DOBfamilyMember5, DOBfamilyMember6, DOBfamilyMember7, DOBfamilyMember8, DOBfamilyMember9, DOBfamilyMember10, DOBfamilyMember11, DOBfamilyMember12, DOBfamilyMember13, DOBfamilyMember14, DOBfamilyMember15, DOBfamilyMember16, DOBfamilyMember17, DOBfamilyMember18, DOBfamilyMember19, sourceOrganismName, socialWorkerNameOrganism, socialWorkerPhoneNumberOrganism, socialWorkerPostOrganism, curatelName, socialWorkerNameCuratel, socialWorkerPhoneNumberCuratel, socialWorkerPostCuratel, registrationDate, lastRenewment, expirationDate, balance from dependants where firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null)
       res.send({
         message: "not there",
@@ -655,20 +727,29 @@ app.post("/api/modifydependant", (req, res) => {
   //mysql
   let sqlchange = `UPDATE dependants SET sex = "${sex}", studentStatus = "${studentStatus}", memberStatus = "${memberStatus}", volunteerStatus = "${volunteerStatus}", email = "${email}", homePhoneNumber = "${homePhoneNumber}", cellphoneNumber = "${cellphoneNumber}", homeNumber = "${homeNumber}", homeStreet = "${homeStreet}", appartmentNumber = "${appartmentNumber}", appartmentLevel = "${appartmentLevel}", homeEntryCode = "${homeEntryCode}", homePostalCode = "${homePostalCode}", residencyProofStatus = "${residencyProofStatus}", typeOfHouse = "${typeOfHouse}", sourceOfRevenue = "${sourceOfRevenue}", familyComposition = "${familyComposition}", numberOfOtherFamilyMembers = "${numberOfOtherFamilyMembers}", DOBfamilyMember1 = "${DOBfamilyMember1}", DOBfamilyMember2 = "${DOBfamilyMember2}", DOBfamilyMember3 = "${DOBfamilyMember3}", DOBfamilyMember4 = "${DOBfamilyMember4}", DOBfamilyMember5 = "${DOBfamilyMember5}", DOBfamilyMember6 = "${DOBfamilyMember6}", DOBfamilyMember7 = "${DOBfamilyMember7}", DOBfamilyMember8 = "${DOBfamilyMember8}", DOBfamilyMember9 = "${DOBfamilyMember9}", DOBfamilyMember10 = "${DOBfamilyMember10}", DOBfamilyMember11 = "${DOBfamilyMember11}", DOBfamilyMember12 = "${DOBfamilyMember12}", DOBfamilyMember13 = "${DOBfamilyMember13}", DOBfamilyMember14 = "${DOBfamilyMember14}", DOBfamilyMember15 = "${DOBfamilyMember15}", DOBfamilyMember16 = "${DOBfamilyMember16}", DOBfamilyMember17 = "${DOBfamilyMember17}", DOBfamilyMember18 = "${DOBfamilyMember18}", DOBfamilyMember19 = "${DOBfamilyMember19}", sourceOrganismName = "${sourceOrganismName}", socialWorkerNameOrganism = "${socialWorkerNameOrganism}", socialWorkerPhoneNumberOrganism = "${socialWorkerPhoneNumberOrganism}", socialWorkerPostOrganism  = "${socialWorkerPostOrganism}", curatelName  = "${curatelName}", socialWorkerNameCuratel  = "${socialWorkerNameCuratel}", socialWorkerPhoneNumberCuratel = "${socialWorkerPhoneNumberCuratel}", socialWorkerPostCuratel = "${socialWorkerPostCuratel}" WHERE id = ${id};`;
   connection.query(sqlchange, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send({ message: "failure" });
     else {
       res.send({ message: "success" });
       let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = "${id}";`;
       connection.query(sql1, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         let firstName = result[0].firstName;
         let lastName = result[0].lastName;
         let dateOfBirth = result[0].dateOfBirth;
 
         let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${0}, "change dependant info", "", "", "");`;
         connection.query(sqlTransaction, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
         });
       });
     }
@@ -690,27 +771,39 @@ app.post("/api/renewcard", (req, res) => {
   //mysql
   sql3 = "select * from variables where id = 1;";
   connection.query(sql3, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null) throw console.error();
     price = result[0].priceMembership;
     let sql = `update dependants set balance = balance + ${
       balance - price
     }, lastRenewment = now(), expirationDate = date_add(now(), INTERVAL 1 year) where id = ${id};`;
     connection.query(sql, (err, result) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
       if (result.affectedRows <= 0) res.send({ message: "failure" });
       else {
         res.send({ message: "success" });
         let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = "${id}";`;
         connection.query(sql1, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
           let firstName = result[0].firstName;
           let lastName = result[0].lastName;
           let dateOfBirth = result[0].dateOfBirth;
 
           let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${balance}, "card renewed", "", "", "");`;
           connection.query(sqlTransaction, (err, result) => {
-            if (err) throw err;
+            if (err) {
+              console.log(err);
+              res.sendStatus(500);
+            }
           });
         });
       }
@@ -733,20 +826,29 @@ app.post("/api/debt", (req, res) => {
   //mysql
   let sql = `update dependants set balance = balance + ${balance} where id = ${id};`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send({ message: "failure" });
     else {
       res.send({ message: "success" });
       let sql1 = `select firstName, lastName, dateOfBirth from dependants where id = "${id}";`;
       connection.query(sql1, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         let firstName = result[0].firstName;
         let lastName = result[0].lastName;
         let dateOfBirth = result[0].dateOfBirth;
 
         let sqlTransaction = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "${curuser}", ${balance}, "changed balance", "", "", "");`;
         connection.query(sqlTransaction, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
         });
       });
     }
@@ -772,7 +874,10 @@ app.post("/api/addbasket", (req, res) => {
 
   sql3 = "select * from variables where id = 1;";
   connection.query(sql3, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null) throw console.error();
     variables = result[0];
     let price = choose(depannage, livraison, christmasBasket, variables);
@@ -809,14 +914,20 @@ app.post("/api/addbasket", (req, res) => {
     };
     let sqlquery = choosesql();
     connection.query(sqlquery, (err, result) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+      }
       if (result.affectedRows <= 0) {
         res.send({ message: "failure" });
         return;
       } else {
         let sql3 = `select homeNumber, homeStreet, appartmentNumber, appartmentLevel, homePostalCode, homeEntryCode from dependants where firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
         connection.query(sql3, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
           if (result[0] == null) res.send("failure");
           else {
             let homeNumber = result[0].homeNumber;
@@ -829,7 +940,10 @@ app.post("/api/addbasket", (req, res) => {
             let address = `Numéro de porte: ${homeNumber}, Nom de rue: ${homeStreet}, Numéro d'appartement: ${appartmentNumber}, Niveau de l'appartement: ${appartmentLevel}, Code postal: ${homePostalCode}, Code d'entrée: ${homeEntryCode}`;
             let sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, amount_to_admin, transactionType, livraison, depannage, christmasBasket, address) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", ${balance}, "add basket", "${livraison}", "${depannage}", "${christmasBasket}", "${address}");`;
             connection.query(sql2, (err, result) => {
-              if (err) throw err;
+              if (err) {
+                console.log(err);
+                res.sendStatus(500);
+              }
               if (result.affectedRows <= 0) res.send({ message: "failure" });
               else {
                 res.send({ message: "success" });
@@ -854,7 +968,10 @@ app.post("/api/alllivraisons", (req, res) => {
 
   let sql = `select * from transactions where livraison = "true" and transactionType = "add basket";`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     res.send(result);
   });
 });
@@ -871,7 +988,10 @@ app.post("/api/allprices", (req, res) => {
 
   sql3 = "select * from variables where id = 1;";
   connection.query(sql3, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] == null) throw console.error();
     res.send(result[0]);
   });
@@ -890,7 +1010,10 @@ app.post("/api/completelivraison", (req, res) => {
 
   sql = `update transactions set livraison = "true-done" where id = ${id}`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send("failure");
     else res.send("success");
   });
@@ -924,7 +1047,10 @@ app.post("/api/changeprices", (req, res) => {
       res.send("success");
       sql2 = `insert into transactions(date, time, currentWeek, currentYear, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()),  "${curuser}", ${0}, "changed prices", "", "", "");`;
       connection.query(sql2, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         console.log(`prices change (${ip})`);
       });
     }
@@ -945,9 +1071,12 @@ app.post("/api/yearlyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentYear = ${year} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentYear = ${year} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY ";" ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     console.log(`yearly report query (${ip})`);
     res.sendFile("/var/lib/mysql/mysql/report.csv");
   });
@@ -969,9 +1098,12 @@ app.post("/api/weeklyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentWeek = ${week} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where currentWeek = ${week} INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY ";" ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     console.log(`weekly report query (${ip})`);
     res.sendFile("/var/lib/mysql/mysql/report.csv");
   });
@@ -991,9 +1123,12 @@ app.post("/api/dailyreport", (req, res) => {
   if (fs.existsSync("/var/lib/mysql/mysql/report.csv")) {
     fs.unlinkSync("/var/lib/mysql/mysql/report.csv");
   }
-  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where date = "${day}" INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY "," ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
+  const sql = `SELECT date, time, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket FROM transactions where date = "${day}" INTO OUTFILE "/var/lib/mysql/mysql/report.csv" FIELDS TERMINATED BY ";" ENCLOSED BY "'" LINES TERMINATED BY "\n";`;
   connection.query(sql, (err) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     res.sendFile("/var/lib/mysql/mysql/report.csv");
     console.log(`daily report query (${ip})`);
   });
@@ -1012,7 +1147,10 @@ app.post("/api/alltransactions", (req, res) => {
   //mysql
   let sql = `select * from transactions where transactionType = "add basket" and currentWeek = week(now());`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     res.send(result);
   });
 });
@@ -1027,6 +1165,7 @@ app.post("/api/removetransaction", (req, res) => {
   let depannage = req.body.depannage;
   let christmasBasket = req.body.christmasBasket;
   if (livraison === "true") livraison = true;
+  if (livraison === "true-done") livraison = true;
   if (livraison === "false") livraison = false;
   if (depannage === "true") depannage = true;
   if (depannage === "false") depannage = false;
@@ -1045,13 +1184,19 @@ app.post("/api/removetransaction", (req, res) => {
 
   let sql = `DELETE from transactions where id = ${id}`;
   connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result.affectedRows <= 0) res.send("failure");
     else {
       res.send("success");
       sql3 = "select * from variables where id = 1;";
       connection.query(sql3, (err, result) => {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
         if (result[0] == null) throw console.error();
         variables = result[0];
         let price = choose(depannage, livraison, christmasBasket, variables);
@@ -1060,7 +1205,10 @@ app.post("/api/removetransaction", (req, res) => {
           balance - price
         } where firstName = "${firstName}" and lastName = "${lastName}" and dateOfBirth = "${dateOfBirth}";`;
         connection.query(sqlquery, (err, result) => {
-          if (err) throw err;
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+          }
           if (result.affectedRows <= 0) throw console.error();
           console.log(`removed a transaction (${ip})`);
         });
@@ -1075,7 +1223,10 @@ app.post("/api/removetransaction", (req, res) => {
 const authCheck = (username) => {
   let sqlcheck = `select * from admins where username = "${username}";`;
   connection.query(sqlcheck, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
     if (result[0] != null) {
       return true;
     } else return false;
@@ -1113,8 +1264,12 @@ const choose = (depannage, livraison, christmasBasket, variables) => {
     return variables.priceBasketDepannageChristmas;
   else if (livraison == true && depannage == false && christmasBasket == true)
     return variables.priceBasketLivraisonChristmas;
-  else if (livraison == true && depannage == true && christmasBasket == true)
+  else if (livraison == true && depannage == false && christmasBasket == true)
     return variables.priceBasketDepannageLivraisonChristmas;
+  else {
+    console.log("error remove transaction");
+    return 0;
+  }
 };
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
