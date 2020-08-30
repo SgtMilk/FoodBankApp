@@ -2,6 +2,8 @@ Welcome to the Meet The Need food bank web app. This web app helps food banks ma
 
 This web-app was made to run on a raspberry pi, but could be easily adapted to other hardware.
 
+Note that this web-app is made to run on a normal 1080p (higher resolutions and 720p are fine too) desktop and not on any tablets/smartphone. There are no media queries on this web-app.
+
 I would recommend doing a clone of the raspberry pi disk each month just in case of a problem so that not all data is lost.
 
 Setup:
