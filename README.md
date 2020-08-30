@@ -163,7 +163,7 @@ Now, let's configure our mysql database. Type:
 
         INSERT INTO admins(username, password) VALUES('admin', 'your hashed password produced by initial_setup_password.js here');
 
-        INSERT INTO variables(priceBasket, priceBasket, priceBasketDepannage, priceBasketLivraison, priceBasketChristmas, priceBasketDepannageLivraison, priceBasketDepannageChristmas, priceBasketLivraisonChristmas, priceBasketDepannageLivraisonChristmas, priceMembership) values(0,0,0,0,0,0,0,0,0,0);
+        INSERT INTO variables(priceBasket, priceBasketDepannage, priceBasketLivraison, priceBasketChristmas, priceBasketDepannageLivraison, priceBasketDepannageChristmas, priceBasketLivraisonChristmas, priceBasketDepannageLivraisonChristmas, priceMembership) values(0,0,0,0,0,0,0,0,0);
 
         exit;
 
