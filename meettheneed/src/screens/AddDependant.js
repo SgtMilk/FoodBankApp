@@ -174,7 +174,7 @@ export const AddDependant = () => {
               <option value="none" selected disabled hidden>
                 Choisir une option
               </option>
-              <option value="Non-Membre ">Non-Membre </option>
+              <option value="Non-Membre">Non-Membre </option>
               <option value="Membre régulier ">Membre régulier </option>
               <option value="Membre honoraire">Membre honoraire</option>
             </select>

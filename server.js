@@ -385,6 +385,11 @@ app.post("/api/adddependant", (req, res) => {
     }
     if (result[0] == null) throw console.error();
     let price = result[0].priceMembership;
+    const nonmember = (memberStatus) => {
+      if (memberStatus === "Non-Membre") return 0;
+      else return price;
+    };
+    price = nonmember(memberStatus);
     connection.query(sqlcheck, (err, result) => {
       if (err) {
         console.log(err);
@@ -938,7 +943,7 @@ app.post("/api/addbasket", (req, res) => {
             let homeEntryCode = result[0].homeEntryCode;
 
             let address = `Numéro de porte: ${homeNumber}, Nom de rue: ${homeStreet}, Numéro d'appartement: ${appartmentNumber}, Niveau de l'appartement: ${appartmentLevel}, Code postal: ${homePostalCode}, Code d'entrée: ${homeEntryCode}`;
-            let sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, amount_to_admin, transactionType, livraison, depannage, christmasBasket, address) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", ${balance}, "add basket", "${livraison}", "${depannage}", "${christmasBasket}", "${address}");`;
+            let sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "\N", ${balance}, "add basket", "${livraison}", "${depannage}", "${christmasBasket}", "${address}");`;
             connection.query(sql2, (err, result) => {
               if (err) {
                 console.log(err);
@@ -1045,7 +1050,7 @@ app.post("/api/changeprices", (req, res) => {
     if (result.affectedRows <= 0) res.send("failure");
     else {
       res.send("success");
-      sql2 = `insert into transactions(date, time, currentWeek, currentYear, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()),  "${curuser}", ${0}, "changed prices", "", "", "");`;
+      sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "\N", "${curuser}", ${0}, "changed prices", "", "", "");`;
       connection.query(sql2, (err, result) => {
         if (err) {
           console.log(err);
