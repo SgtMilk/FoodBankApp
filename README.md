@@ -193,7 +193,7 @@ Now, lets test what we have done:
 
     // everything should work fine here, but you wont be able to open the web-page
 
-If yo are on a computer, you can also test the app on localhost:8000 if you change the proxy to http://localhost:8000 in the root package.json file (not the one inside the react project).
+If yo are on a computer, you can also test the app on localhost:80 if you change the proxy to http://localhost:80 in the root package.json file (not the one inside the react project).
 
 You can put the server.js file as a service if you want it to work in the background. To do this, type:
 
@@ -230,33 +230,6 @@ You can put the server.js file as a service if you want it to work in the backgr
 
     sudo systemctl status administration_system         //if everything is green, then everything should be working
 
-Now, let's setup nginx
-
-    sudo apt-get remove apache2
-
-    sudo apt-get install nginx
-
-    sudo systemctl start nginx
-
-    cd /etc/nginx/sites-available/
-
-    sudo nano example.com.conf
-
-        //type:
-
-        server {
-            listen 80;
-            server_name http://raspberrypi.local;
-            location / {
-            proxy_pass http://localhost:8000;
-            }
-        }
-
-        //then, type Ctrl + O and Ctrl + X and continue...
-
-    ln -s /etc/nginx/sites-available/example.com.conf /etc/nginx/sites-enabled/example.com.conf
-
-    sudo systemctl reload nginx
 
 And there you go! everything should be working fine. You can access this website by typing raspberrypi.local in a browser in the same network.
 
@@ -268,6 +241,6 @@ I recommend running a backup of your mysql database at least every month or so. 
 
 Disclaimer
 
-This web-app is made to run under https. It has some security features, such as ignoring back-end XXS and SQL injection attacks, but it is still vulnerable to other attacks. All authors remove themselves from all liability towards any inconvinience the user may encounter during the use of this web-app.
+This web-app is made to run under https with nginx or apache as web servers (not directly on port 80 as said earlier) for higher security. It has some security features, such as ignoring back-end XXS and SQL injection attacks, but it is still vulnerable to other attacks. All authors remove themselves from all liability towards any inconvinience the user may encounter during the use of this web-app.
 
 Copyright (C) 2020 Alix Routhier-Lalonde. This file is subject to the terms and conditions defined in file "LICENSE.txt", which is part of this source code package.
