@@ -943,7 +943,7 @@ app.post("/api/addbasket", (req, res) => {
             let homeEntryCode = result[0].homeEntryCode;
 
             let address = `Numéro de porte: ${homeNumber}, Nom de rue: ${homeStreet}, Numéro d'appartement: ${appartmentNumber}, Niveau de l'appartement: ${appartmentLevel}, Code postal: ${homePostalCode}, Code d'entrée: ${homeEntryCode}`;
-            let sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "\N", ${balance}, "add basket", "${livraison}", "${depannage}", "${christmasBasket}", "${address}");`;
+            let sql2 = `insert into transactions(date, time, currentWeek, currentYear, dependant, admin, amount_to_admin, transactionType, livraison, depannage, christmasBasket, address) values(now(), now(), week(now()), year(now()), "${lastName}, ${firstName} (${dateOfBirth})", "\N", ${balance}, "add basket", "${livraison}", "${depannage}", "${christmasBasket}", "${address}");`;
             connection.query(sql2, (err, result) => {
               if (err) {
                 console.log(err);
