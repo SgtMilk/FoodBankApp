@@ -120,7 +120,7 @@ export const SearchDependant = () => {
   };
 
   const showQR = (id, email) => {
-    let image = document.getElementById("image-searchDependant");
+    let image = document.getElementById("image-addDependant");
     let img = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`;
     image.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`.replace(
       "150x150",
@@ -128,7 +128,9 @@ export const SearchDependant = () => {
     );
     image.style.display = "block";
     if (email === null || email === "" || email === undefined) return;
-    window.open(`mailto:${email}?subject=QRcode&body=${img}`);
+    window.open(
+      `mailto:${email}?subject=QRcode&body="<img src=${img} alt='qrcode'/>"`
+    );
   };
 
   const removeDependant = () => {
