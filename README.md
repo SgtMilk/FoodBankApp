@@ -177,16 +177,6 @@ Now, let's configure our mysql database. Type:
 
         //Type Ctrl + X
 
-    sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
-
-        //add this line to the end of the file:
-
-        secure_file_priv=""
-
-        //Type Ctrl + O
-
-        //Type Ctrl + X
-
 Now, lets test what we have done:
 
     sudo npm run start

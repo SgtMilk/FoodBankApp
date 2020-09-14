@@ -79,7 +79,7 @@ export const AddDependant = () => {
     );
     image.style.display = "block";
     if (email === null || email === "" || email === undefined) return;
-    window.open(`mailto:${email}?subject=QRcode&body=${img}`);
+    window.open(`mailto:${email}?subject=QRcode&body='${img}'`);
   };
 
   return (
